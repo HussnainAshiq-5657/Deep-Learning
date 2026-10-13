@@ -1,41 +1,34 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Urdu Voice Dataset Collection</title>
+  <title>Urdu Voice Recording Assignment</title>
 
   <style>
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      padding: 20px;
-      background: #f3f6fb;
-      color: #1f2937;
+      padding: 18px;
       font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #172033;
     }
 
     .container {
       max-width: 850px;
-      margin: auto;
-      padding: 24px;
+      margin: 20px auto;
+      padding: 25px;
       background: white;
-      border-radius: 16px;
+      border-radius: 14px;
       box-shadow: 0 5px 25px #00000012;
     }
 
-    h1 { text-align: center; color: #174ea6; }
-    .subtitle, .hint { color: #64748b; line-height: 1.7; }
-    .subtitle { text-align: center; }
-
-    label {
-      display: block;
-      margin: 15px 0 6px;
-      font-weight: bold;
-    }
+    h1 { text-align: center; }
+    .muted { color: #64748b; line-height: 1.7; }
+    label { display: block; margin: 14px 0 7px; font-weight: bold; }
 
     input[type="text"] {
       width: 100%;
@@ -45,788 +38,703 @@
       font-size: 16px;
     }
 
-    .language-options {
+    .languages {
       display: flex;
-      gap: 20px;
+      gap: 22px;
       flex-wrap: wrap;
-      margin: 12px 0;
     }
 
-    .language-options label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0;
-      font-weight: normal;
-    }
+    .languages label { font-weight: normal; }
 
     button {
-      padding: 12px 16px;
       border: 0;
       border-radius: 8px;
-      background: #e2e8f0;
-      color: #1e293b;
-      font-size: 15px;
-      font-weight: bold;
+      padding: 12px 16px;
+      margin: 5px 4px 5px 0;
       cursor: pointer;
-    }
-
-    button:disabled { opacity: .5; cursor: not-allowed; }
-    .primary { background: #1769e0; color: white; }
-    .record-btn { background: #dc2626; color: white; }
-    .stop-btn { background: #991b1b; color: white; }
-    .save-btn { background: #15803d; color: white; }
-
-    .workspace { display: none; margin-top: 25px; }
-
-    .progress-line {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      color: #475569;
-      font-size: 14px;
-    }
-
-    .progress-track {
-      height: 10px;
-      margin: 10px 0 20px;
-      overflow: hidden;
+      font-size: 15px;
       background: #e2e8f0;
-      border-radius: 20px;
+      color: #172033;
     }
 
-    .progress-fill {
-      width: 0;
+    .primary { background: #2563eb; color: white; }
+    .record { background: #dc2626; color: white; }
+    .hidden { display: none !important; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+
+    .paragraph-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 18px 0;
+    }
+
+    .paragraph-text {
+      font-size: 21px;
+      line-height: 2;
+      white-space: pre-wrap;
+    }
+
+    .urdu { direction: rtl; text-align: right; }
+
+    .progress-bg {
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
       height: 100%;
+      width: 0;
       background: #16a34a;
       transition: width .2s;
     }
 
-    .paragraph-card {
-      padding: 20px;
-      border: 1px solid #dbe3ee;
-      border-radius: 12px;
-      background: #f8fafc;
+    #timerText {
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      color: #dc2626;
+      margin: 18px 0;
     }
 
-    .paragraph-card h2 { margin-top: 0; font-size: 20px; }
-
-    #paragraphText {
-      font-size: 19px;
-      line-height: 2;
-      overflow-wrap: anywhere;
-    }
-
-    #paragraphText.urdu {
-      direction: rtl;
-      text-align: right;
-      font-size: 23px;
-      line-height: 2.1;
-      font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic", Arial, sans-serif;
-    }
-
-    .recording-status {
+    .status {
+      padding: 13px;
       margin-top: 15px;
-      padding: 12px;
-      background: #eef2ff;
+      background: #eff6ff;
       border-radius: 8px;
       line-height: 1.6;
       overflow-wrap: anywhere;
     }
 
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .button-row button { flex: 1; min-width: 130px; }
-
-    .save-section {
-      margin-top: 25px;
-      padding: 18px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 12px;
-    }
-
-    #uploadStatus { line-height: 1.6; overflow-wrap: anywhere; }
-    .hint { font-size: 14px; }
+    .success { background: #dcfce7; }
+    .error { background: #fee2e2; }
+    .small { font-size: 13px; }
 
     @media (max-width: 600px) {
-      body { padding: 10px; }
-      .container { padding: 16px; }
-      #paragraphText { font-size: 17px; }
-      #paragraphText.urdu { font-size: 21px; }
-      .button-row button { min-width: 100%; }
+      body { padding: 8px; }
+      .container { padding: 15px; margin: 8px auto; }
+      .paragraph-text { font-size: 19px; }
+      button { padding: 11px; }
     }
   </style>
 </head>
 
 <body>
-<div class="container">
-  <h1>Urdu Voice Dataset Collection</h1>
-  <p class="subtitle">
-    Read all 20 paragraphs clearly. After recording, review your audio
-    and submit your recordings.
+<main class="container">
+  <h1>Urdu Voice Recording Assignment</h1>
+
+  <p class="muted">
+    Enter your name and participant ID. Select Urdu or Roman Urdu.
+    Record each paragraph clearly. Each paragraph can be recorded only once,
+    for a maximum of 45 seconds.
   </p>
 
-  <section id="startSection">
-    <h2>Participant Information</h2>
+  <section id="participantForm">
+    <label for="participantName">Participant Name</label>
+    <input id="participantName" type="text" maxlength="100"
+           placeholder="Enter your full name">
 
-    <label for="name">Participant Name</label>
-    <input id="name" type="text" maxlength="100"
-           placeholder="Enter your full name" autocomplete="name">
+    <label for="participantId">Participant ID</label>
+    <input id="participantId" type="text" maxlength="40"
+           placeholder="Enter your assigned ID">
 
-    <label for="pid">Participant ID</label>
-    <input id="pid" type="text" maxlength="40"
-           placeholder="Example: P001">
-
-    <label>Select One Language</label>
-    <div class="language-options">
-      <label><input type="radio" name="language" value="Urdu" checked> اردو (Urdu)</label>
-      <label><input type="radio" name="language" value="Roman Urdu"> Roman Urdu</label>
+    <label>Select one language</label>
+    <div class="languages">
+      <label><input type="radio" name="language" value="urdu" checked> اردو</label>
+      <label><input type="radio" name="language" value="roman"> Roman Urdu</label>
     </div>
 
-    <p class="hint">
-      Choose one language. All 20 paragraphs will use your selected language.
-    </p>
-
-    <button class="primary" type="button" onclick="startForm()">
-      Start Recording
-    </button>
+    <button id="startButton" class="primary">Start Assignment</button>
   </section>
 
-  <section id="workspace" class="workspace">
-    <div class="progress-line">
-      <span id="paragraphCounter">Paragraph 1 of 20</span>
-      <span id="recordingCounter">0 of 20 recordings completed</span>
-    </div>
+  <section id="workspace" class="hidden">
+    <p><strong>Participant:</strong> <span id="displayName"></span></p>
+    <p><strong>Participant ID:</strong> <span id="displayId"></span></p>
+    <p><strong>Language:</strong> <span id="displayLanguage"></span></p>
 
-    <div class="progress-track">
-      <div id="progressFill" class="progress-fill"></div>
+    <div class="progress-bg">
+      <div id="progressBar" class="progress-bar"></div>
     </div>
+    <p id="progressText">0 of 20 recordings completed</p>
 
     <div class="paragraph-card">
-      <h2 id="paragraphHeading">Paragraph 1</h2>
-      <div id="paragraphText"></div>
-
-      <div id="recordingStatus" class="recording-status" role="status" aria-live="polite">
-        This paragraph has not been recorded yet. Click Record to start.
-      </div>
-
-      <div class="button-row">
-        <button id="recordButton" class="record-btn" type="button" onclick="toggleRecord()">Record</button>
-        <button id="playButton" type="button" onclick="playRecording()">Play Recording</button>
-        <button id="previousButton" type="button" onclick="moveParagraph(-1)">Previous</button>
-        <button id="nextButton" class="primary" type="button" onclick="moveParagraph(1)">Next</button>
-      </div>
-
-      <p class="hint">
-        Click Record, speak, then click Stop Recording. You can re-record
-        a paragraph if necessary.
-      </p>
+      <h2 id="paragraphHeading">Paragraph 1 of 20</h2>
+      <div id="paragraphText" class="paragraph-text"></div>
+      <p id="recordingInfo" class="muted">Not recorded yet</p>
+      <div id="timerText">45 seconds</div>
     </div>
 
-    <div class="save-section">
-      <h2>Review and Submit</h2>
-      <p>Once all 20 recordings are complete, click Save Recordings.</p>
-      <button id="saveButton" class="save-btn" type="button" onclick="saveRecordings()" disabled>
-        Save Recordings
-      </button>
-      <p id="uploadStatus" role="status" aria-live="polite"></p>
+    <button id="recordButton" class="record">Start Recording</button>
+    <button id="playButton" disabled>Play Recording</button>
+    <button id="downloadButton" disabled>Download Audio</button>
+
+    <div>
+      <button id="previousButton">← Previous</button>
+      <button id="nextButton" class="primary">Next →</button>
     </div>
+
+    <div id="status" class="status" role="status" aria-live="polite">
+      Ready to record.
+    </div>
+
+    <hr style="margin:24px 0;border:0;border-top:1px solid #e2e8f0">
+
+    <h3>Save your recordings</h3>
+    <p class="muted">
+      Download each audio file or export your collected recordings as a JSON
+      file. Keep this page open until you have saved your work.
+    </p>
+
+    <button id="downloadAllButton">Export Dataset JSON</button>
+    <button id="saveButton" class="primary" disabled>Submit Recordings</button>
+
+    <p class="muted small">
+      The Google Drive upload endpoint is not configured in this GitHub Pages
+      file yet. Submit Recordings will explain this until the backend is connected.
+    </p>
   </section>
-</div>
+</main>
 
 <script>
+"use strict";
+
+/* Exactly 20 paragraphs. */
 const paragraphs = [
   {
-    urdu: "صبح کا وقت انسانی زندگی میں ایک خاص اہمیت رکھتا ہے۔ جب سورج آہستہ آہستہ طلوع ہوتا ہے تو فضا میں روشنی پھیلنے لگتی ہے اور پرندوں کی آوازیں ماحول کو خوشگوار بنا دیتی ہیں۔ صبح جلدی اٹھنے سے انسان کو اپنے کام ترتیب دینے، ورزش کرنے اور دن کا آغاز سکون کے ساتھ کرنے کا موقع ملتا ہے۔ ایک اچھی صبح پورے دن کی کارکردگی پر مثبت اثر ڈال سکتی ہے۔",
-    roman: "Subah ka waqt insani zindagi mein ek khaas ahmiyat rakhta hai. Jab sooraj aahista aahista tuloo hota hai to faza mein roshni phailne lagti hai aur parindon ki awazein mahol ko khushgawar bana deti hain. Subah jaldi uthne se insan ko apne kaam tarteeb dene, warzish karne aur din ka aghaz sukoon ke saath karne ka mauqa milta hai. Ek achhi subah poore din ki karkardagi par musbat asar daal sakti hai."
+    urdu: "صبح کا وقت دن کا ایک خوبصورت حصہ ہوتا ہے۔ اس وقت فضا نسبتاً صاف اور پرسکون ہوتی ہے اور سورج کی نرم روشنی ہر طرف پھیلنے لگتی ہے۔ جو لوگ صبح جلدی اٹھتے ہیں وہ اپنے کام بہتر منصوبہ بندی کے ساتھ شروع کر سکتے ہیں۔ صبح کی سیر جسم کو تازگی دیتی ہے اور ذہن کو سکون پہنچاتی ہے۔ اگر ہم روزانہ وقت پر اٹھنے، ورزش کرنے اور ضروری کام ترتیب سے انجام دینے کی عادت اپنائیں تو ہماری زندگی زیادہ منظم ہو سکتی ہے۔",
+    roman: "Subah ka waqt din ka aik khoobsurat hissa hota hai. Is waqt fiza nisbat-an saaf aur pursukoon hoti hai aur sooraj ki narm roshni har taraf phailne lagti hai. Jo log subah jaldi uthte hain woh apne kaam behtar mansuba bandi ke saath shuru kar sakte hain. Subah ki sair jism ko tazgi deti hai aur zehan ko sukoon pohanchati hai. Agar hum rozana waqt par uthne, warzish karne aur zaroori kaam tarteeb se karne ki aadat apnayein to zindagi zyada munazzam ho sakti hai."
   },
   {
-    urdu: "تعلیم انسان کی شخصیت کو بہتر بنانے میں بنیادی کردار ادا کرتی ہے۔ علم حاصل کرنے سے انسان میں سوچنے، سوال کرنے اور مسائل کو سمجھنے کی صلاحیت پیدا ہوتی ہے۔ ایک تعلیم یافتہ شخص اپنے فیصلے بہتر انداز میں کر سکتا ہے اور معاشرے کی ترقی میں حصہ لے سکتا ہے۔ تعلیم صرف کتابیں پڑھنے کا نام نہیں بلکہ اچھے اخلاق، ذمہ داری اور دوسروں کا احترام سیکھنے کا ذریعہ بھی ہے۔",
-    roman: "Taleem insan ki shakhsiyat ko behtar banane mein bunyadi kirdar ada karti hai. Ilm hasil karne se insan mein sochne, sawal karne aur masail ko samajhne ki salahiyat paida hoti hai. Ek taleem yafta shakhs apne faislay behtar andaz mein kar sakta hai aur muashray ki taraqqi mein hissa le sakta hai. Taleem sirf kitabein parhne ka naam nahi balkay achhe ikhlaq, zimmedari aur doosron ka ehtram seekhne ka zariya bhi hai."
+    urdu: "تعلیم انسان کی زندگی میں بنیادی اہمیت رکھتی ہے۔ یہ ہمیں نئی باتیں سیکھنے، درست اور غلط میں فرق کرنے اور بہتر فیصلے کرنے کی صلاحیت دیتی ہے۔ ایک تعلیم یافتہ شخص اپنے خاندان اور معاشرے کی ترقی میں مثبت کردار ادا کر سکتا ہے۔ تعلیم صرف کتابیں پڑھنے یا امتحان پاس کرنے کا نام نہیں بلکہ اس میں اخلاق، ذمہ داری اور دوسروں کا احترام بھی شامل ہے۔ ہر بچے کو سیکھنے کے یکساں مواقع ملنے چاہئیں تاکہ وہ اپنے مستقبل کو بہتر بنا سکے۔",
+    roman: "Taleem insan ki zindagi mein bunyadi ahmiyat rakhti hai. Yeh humein nai baatein seekhne, durust aur ghalat mein farq karne aur behtar faislay karne ki salahiyat deti hai. Aik taleem yafta shakhs apne khandan aur muashray ki taraqqi mein musbat kirdar ada kar sakta hai. Taleem sirf kitabein parhne ya imtihan paas karne ka naam nahi, balkay is mein ikhlaq, zimmedari aur doosron ka ehtram bhi shamil hai. Har bachay ko seekhne ke yaksaan mauqay milne chahiye taake woh apna mustaqbil behtar bana sake."
   },
   {
-    urdu: "وقت ایک ایسی دولت ہے جسے دوبارہ حاصل نہیں کیا جا سکتا۔ جو لوگ اپنے وقت کی قدر کرتے ہیں وہ عموماً اپنے مقاصد کی طرف زیادہ منظم انداز میں بڑھتے ہیں۔ روزانہ کے کاموں کی منصوبہ بندی کرنے سے غیر ضروری تاخیر کم ہوتی ہے اور اہم ذمہ داریوں کے لیے وقت بچ جاتا ہے۔ وقت کا درست استعمال انسان کو کامیابی کے قریب لے جاتا ہے، اس لیے ہر دن کو مفید بنانے کی کوشش کرنی چاہیے۔",
-    roman: "Waqt ek aisi daulat hai jise dobara hasil nahi kiya ja sakta. Jo log apne waqt ki qadar karte hain woh aam tor par apne maqsad ki taraf zyada munazzam andaz mein barhte hain. Rozana ke kaamon ki mansooba bandi karne se ghair zaroori takheer kam hoti hai aur aham zimmedariyon ke liye waqt bach jata hai. Waqt ka durust istemal insan ko kamyabi ke qareeb le jata hai, is liye har din ko mufeed banane ki koshish karni chahiye."
+    urdu: "وقت ایک قیمتی دولت ہے جسے واپس حاصل نہیں کیا جا سکتا۔ جو لوگ اپنے وقت کی قدر کرتے ہیں وہ اپنے مقاصد کے حصول کے لیے بہتر کوشش کر پاتے ہیں۔ ہمیں روزمرہ کے کاموں کی فہرست بنانی چاہیے اور اہم کام پہلے مکمل کرنے چاہئیں۔ غیر ضروری مصروفیات میں بہت زیادہ وقت گزارنے سے کارکردگی متاثر ہوتی ہے۔ وقت کی پابندی طلبہ اور ملازمت کرنے والے افراد دونوں کے لیے ضروری ہے۔ وقت کا درست استعمال انسان کو نظم و ضبط سکھاتا ہے اور کامیابی کے امکانات بڑھاتا ہے۔",
+    roman: "Waqt aik qeemti daulat hai jise wapas hasil nahi kiya ja sakta. Jo log apne waqt ki qadar karte hain woh apne maqasid ke husool ke liye behtar koshish kar pate hain. Humein rozmarrah ke kaamon ki fehrist banani chahiye aur aham kaam pehle mukammal karne chahiye. Ghair zaroori masroofiyat mein zyada waqt guzarne se karkardagi mutasir hoti hai. Waqt ki pabandi talib ilmon aur mulazmat karne walay afrad dono ke liye zaroori hai. Waqt ka durust istemal nazm o zabt sikhata aur kamyabi ke imkanaat barhata hai."
   },
   {
-    urdu: "کتابیں پڑھنا ایک مفید عادت ہے جو انسان کے علم اور تخیل میں اضافہ کرتی ہے۔ اچھی کتابیں ہمیں مختلف لوگوں، معاشروں اور زمانوں کے بارے میں معلومات فراہم کرتی ہیں۔ مطالعے سے زبان بہتر ہوتی ہے اور خیالات کو واضح انداز میں بیان کرنے کی صلاحیت بڑھتی ہے۔ اگر روزانہ کچھ وقت مطالعے کے لیے مختص کیا جائے تو آہستہ آہستہ یہ عادت شخصیت کا مستقل حصہ بن سکتی ہے۔",
-    roman: "Kitabein parhna ek mufeed aadat hai jo insan ke ilm aur takhayyul mein izafa karti hai. Achhi kitabein hamein mukhtalif logon, muashron aur zamanon ke bare mein maloomat faraham karti hain. Mutalay se zaban behtar hoti hai aur khayalat ko wazeh andaz mein bayan karne ki salahiyat barhti hai. Agar rozana kuch waqt mutalay ke liye mukhtas kiya jaye to aahista aahista yeh aadat shakhsiyat ka mustaqil hissa ban sakti hai."
+    urdu: "کتابیں علم حاصل کرنے کا ایک اہم ذریعہ ہیں۔ اچھی کتابیں پڑھنے سے ہماری سوچ وسیع ہوتی ہے اور ہمیں مختلف لوگوں، ثقافتوں اور خیالات کے بارے میں جاننے کا موقع ملتا ہے۔ مطالعے کی عادت زبان بہتر بنانے اور الفاظ کا ذخیرہ بڑھانے میں مدد دیتی ہے۔ طالب علم اگر روزانہ کچھ وقت مطالعے کے لیے مخصوص کریں تو ان کی تعلیمی کارکردگی بہتر ہو سکتی ہے۔ کتابوں سے حاصل ہونے والا علم ہمیں تحقیق کرنے اور مسائل کے حل تلاش کرنے کی ترغیب دیتا ہے۔",
+    roman: "Kitabein ilm hasil karne ka aik aham zariya hain. Achhi kitabein parhne se hamari soch wasee hoti hai aur humein mukhtalif logon, saqafaton aur khayalat ke bare mein janne ka mauqa milta hai. Mutalay ki aadat zaban behtar banane aur alfaaz ka zakheera barhane mein madad deti hai. Talib ilm agar rozana kuch waqt mutalay ke liye rakhein to un ki taleemi karkardagi behtar ho sakti hai. Kitabon se hasil hone wala ilm humein tehqeeq karne aur masail ke hal talash karne ki targheeb deta hai."
   },
   {
-    urdu: "صحت مند رہنے کے لیے متوازن غذا، مناسب نیند اور باقاعدہ جسمانی سرگرمی ضروری ہیں۔ تازہ پھل، سبزیاں، دالیں اور صاف پانی جسم کو ضروری غذائی اجزا فراہم کرتے ہیں۔ مسلسل بیٹھے رہنے کے بجائے تھوڑی دیر چہل قدمی کرنا بھی فائدہ مند ہو سکتا ہے۔ ہر شخص کو اپنی روزمرہ زندگی میں ایسی عادتیں اپنانی چاہییں جو جسمانی توانائی اور ذہنی سکون برقرار رکھنے میں مدد دیں۔",
-    roman: "Sehat mand rehne ke liye mutawazan ghiza, munasib neend aur baqaida jismani sargarmi zaroori hain. Taza phal, sabziyan, daalein aur saaf pani jism ko zaroori ghizai ajza faraham karte hain. Musalsal baithe rehne ke bajaye thori der chehal qadmi karna bhi faida mand ho sakta hai. Har shakhs ko apni rozmarra zindagi mein aisi aadatein apnani chahiye jo jismani tawanai aur zehni sukoon barqarar rakhne mein madad dein."
+    urdu: "صحت مند زندگی گزارنے کے لیے متوازن غذا، مناسب نیند اور باقاعدہ ورزش ضروری ہیں۔ تازہ پھل، سبزیاں اور صاف پانی جسم کو ضروری غذائیت فراہم کرتے ہیں۔ زیادہ دیر تک بیٹھے رہنے اور غیر صحت مند خوراک استعمال کرنے سے مسائل پیدا ہو سکتے ہیں۔ ہمیں اپنے روزانہ کے معمول میں چہل قدمی یا کوئی مناسب جسمانی سرگرمی شامل کرنی چاہیے۔ ذہنی سکون بھی اچھی صحت کا اہم حصہ ہے، اس لیے کام کے ساتھ آرام اور خاندان کے لیے وقت نکالنا ضروری ہے۔",
+    roman: "Sehat mand zindagi guzarne ke liye mutawazan ghiza, munasib neend aur baqaidah warzish zaroori hain. Taza phal, sabziyan aur saaf pani jism ko zaroori ghizaiyat faraham karte hain. Zyada dair tak baithe rehne aur ghair sehat mand khorak se masail paida ho sakte hain. Humein rozana ke mamool mein chehal qadmi ya koi munasib jismani sargarmi shamil karni chahiye. Zehni sukoon bhi achhi sehat ka aham hissa hai, is liye kaam ke saath aaram aur khandan ke liye waqt nikalna zaroori hai."
   },
   {
-    urdu: "درخت قدرت کا ایک قیمتی تحفہ ہیں اور ماحول کو صاف رکھنے میں اہم کردار ادا کرتے ہیں۔ یہ ہمیں سایہ، پھل اور آکسیجن فراہم کرتے ہیں جبکہ بہت سے پرندوں اور جانوروں کو رہنے کی جگہ بھی دیتے ہیں۔ شہروں میں درختوں کی موجودگی گرمی کے اثرات کم کرنے اور فضا کو خوشگوار بنانے میں مدد دیتی ہے۔ ہمیں چاہیے کہ درخت لگائیں، ان کی حفاظت کریں اور دوسروں کو بھی اس کام کی ترغیب دیں۔",
-    roman: "Darakht qudrat ka ek qeemti tohfa hain aur mahol ko saaf rakhne mein aham kirdar ada karte hain. Yeh hamein saya, phal aur oxygen faraham karte hain jabke bohat se parindon aur janwaron ko rehne ki jagah bhi dete hain. Shehron mein darakhton ki mojoodgi garmi ke asraat kam karne aur faza ko khushgawar banane mein madad deti hai. Hamein chahiye ke darakht lagayein, un ki hifazat karein aur doosron ko bhi is kaam ki targheeb dein."
+    urdu: "درخت زمین اور انسان دونوں کے لیے بہت فائدہ مند ہیں۔ یہ ہوا کو صاف کرنے، سایہ فراہم کرنے اور ماحول کا درجہ حرارت متوازن رکھنے میں مدد دیتے ہیں۔ بہت سے پرندے اور جانور درختوں کو اپنا گھر بناتے ہیں۔ جنگلات کی کٹائی سے ماحول کو نقصان پہنچتا ہے اور کئی جانداروں کی رہائش ختم ہو جاتی ہے۔ ہمیں گھروں، اسکولوں اور عوامی مقامات پر درخت لگانے چاہئیں اور ان کی دیکھ بھال بھی کرنی چاہیے۔ ہر شخص چند پودے لگا کر ماحول کو سرسبز بنانے میں حصہ لے سکتا ہے۔",
+    roman: "Darakht zameen aur insan dono ke liye bohat faida mand hain. Yeh hawa ko saaf karne, saya faraham karne aur mahol ka darja hararat mutawazan rakhne mein madad dete hain. Bohat se parinday aur janwar darakhton ko apna ghar banate hain. Janglaat ki katai se mahol ko nuqsan pohanchta hai aur kai jandaron ki rehaish khatam ho jati hai. Humein gharon, schoolon aur awami maqamat par darakht lagane aur un ki dekh bhaal karne chahiye. Har shakhs chand poday laga kar mahol ko sarsabz banane mein hissa le sakta hai."
   },
   {
-    urdu: "انٹرنیٹ نے دنیا بھر میں رابطے اور معلومات کے حصول کو آسان بنا دیا ہے۔ لوگ گھر بیٹھے تعلیم حاصل کر سکتے ہیں، اپنے کام انجام دے سکتے ہیں اور دور رہنے والے عزیزوں سے بات کر سکتے ہیں۔ تاہم انٹرنیٹ استعمال کرتے وقت ذاتی معلومات کی حفاظت اور درست معلومات کی پہچان ضروری ہے۔ ٹیکنالوجی اس وقت زیادہ فائدہ دیتی ہے جب اسے ذمہ داری، احتیاط اور واضح مقصد کے ساتھ استعمال کیا جائے۔",
-    roman: "Internet ne duniya bhar mein rabtay aur maloomat ke husool ko aasan bana diya hai. Log ghar baithe taleem hasil kar sakte hain, apne kaam anjam de sakte hain aur door rehne wale azeezon se baat kar sakte hain. Taham internet istemal karte waqt zaati maloomat ki hifazat aur durust maloomat ki pehchan zaroori hai. Technology us waqt zyada faida deti hai jab ise zimmedari, ehtiyat aur wazeh maqsad ke saath istemal kiya jaye."
+    urdu: "انٹرنیٹ نے دنیا بھر میں معلومات کے تبادلے کو آسان بنا دیا ہے۔ لوگ اس کی مدد سے تعلیم حاصل کر سکتے ہیں، اپنے کام انجام دے سکتے ہیں اور دور رہنے والے افراد سے رابطہ رکھ سکتے ہیں۔ آن لائن کورسز اور تعلیمی ویڈیوز سیکھنے کے نئے مواقع فراہم کرتے ہیں۔ تاہم ذاتی معلومات کی حفاظت کرنا اور ہر خبر پر فوراً یقین نہ کرنا ضروری ہے۔ ہمیں مضبوط پاس ورڈ استعمال کرنے چاہئیں اور مشکوک روابط سے محتاط رہنا چاہیے۔ ذمہ دارانہ استعمال انٹرنیٹ کو زیادہ فائدہ مند بنا سکتا ہے۔",
+    roman: "Internet ne duniya bhar mein maloomat ke tabadlay ko aasan bana diya hai. Log is ki madad se taleem hasil kar sakte hain, apne kaam kar sakte hain aur door rehne walay afrad se rabta rakh sakte hain. Online courses aur taleemi videos seekhne ke naye mauqay faraham karte hain. Taham zaati maloomat ki hifazat karna aur har khabar par foran yaqeen na karna zaroori hai. Humein mazboot password istemal karne aur mashkook rabton se mohtat rehne chahiye. Zimmedarana istemal internet ko zyada faida mand bana sakta hai."
   },
   {
-    urdu: "کسی بھی کام میں کامیابی حاصل کرنے کے لیے محنت اور مستقل مزاجی اہم ہیں۔ بعض اوقات نتائج فوراً سامنے نہیں آتے، لیکن مسلسل کوشش انسان کے تجربے اور صلاحیت میں اضافہ کرتی ہے۔ ناکامی سے مایوس ہونے کے بجائے اس کی وجوہات سمجھنا اور اپنی غلطیوں سے سیکھنا زیادہ مفید ہوتا ہے۔ واضح مقصد، مناسب منصوبہ بندی اور صبر کے ساتھ انسان مشکل کاموں میں بھی بہتری لا سکتا ہے۔",
-    roman: "Kisi bhi kaam mein kamyabi hasil karne ke liye mehnat aur mustaqil mizaji aham hain. Baaz auqat nataij foran samne nahi aate, lekin musalsal koshish insan ke tajurbe aur salahiyat mein izafa karti hai. Nakami se mayoos hone ke bajaye is ki wajuhat samajhna aur apni ghaltiyon se seekhna zyada mufeed hota hai. Wazeh maqsad, munasib mansooba bandi aur sabr ke saath insan mushkil kaamon mein bhi behtari la sakta hai."
+    urdu: "کامیابی حاصل کرنے کے لیے محنت، مستقل مزاجی اور صبر بہت اہم ہیں۔ کسی بھی بڑے مقصد تک پہنچنے میں وقت لگتا ہے اور راستے میں مشکلات بھی پیش آ سکتی ہیں۔ اگر ہم ناکامی سے مایوس ہونے کے بجائے اپنی غلطیوں سے سیکھیں تو آگے بڑھنے کے امکانات زیادہ ہو جاتے ہیں۔ واضح منصوبہ بنانا اور اپنی کارکردگی کا جائزہ لینا فائدہ مند ہے۔ دوسروں کی کامیابی سے حوصلہ حاصل کرنا چاہیے لیکن اپنا موازنہ مسلسل دوسروں سے نہیں کرنا چاہیے۔ ہر شخص اپنی رفتار سے ترقی کر سکتا ہے۔",
+    roman: "Kamyabi hasil karne ke liye mehnat, mustaqil mizaji aur sabr bohat aham hain. Kisi baray maqsad tak pohanchne mein waqt lagta hai aur raste mein mushkilat bhi aa sakti hain. Agar hum nakami se mayoos hone ke bajaye apni ghaltiyon se seekhein to aage barhne ke imkanaat barh jate hain. Wazeh mansooba banana aur apni karkardagi ka jaiza lena faida mand hai. Doosron ki kamyabi se hosla hasil karna chahiye lekin apna muqabla musalsal doosron se nahi karna chahiye. Har shakhs apni raftaar se taraqqi kar sakta hai."
   },
   {
-    urdu: "خاندان انسان کی زندگی میں محبت، تعاون اور تحفظ کا احساس پیدا کرتا ہے۔ گھر کے افراد ایک دوسرے کی خوشیوں میں شریک ہوتے ہیں اور مشکل وقت میں مدد فراہم کرتے ہیں۔ باہمی احترام اور کھل کر بات کرنے سے رشتے مضبوط ہوتے ہیں۔ اختلافات ہر خاندان میں ہو سکتے ہیں، لیکن تحمل سے بات سننا اور مسائل کو مل کر حل کرنا گھر کے ماحول کو بہتر بنانے میں مدد دیتا ہے۔",
-    roman: "Khandan insan ki zindagi mein mohabbat, taawun aur tahaffuz ka ehsaas paida karta hai. Ghar ke afrad ek doosre ki khushiyon mein shareek hote hain aur mushkil waqt mein madad faraham karte hain. Bahami ehtram aur khul kar baat karne se rishte mazboot hote hain. Ikhtilafat har khandan mein ho sakte hain, lekin tahammul se baat sunna aur masail ko mil kar hal karna ghar ke mahol ko behtar banane mein madad deta hai."
+    urdu: "خاندان انسان کو محبت، تحفظ اور اپنائیت کا احساس فراہم کرتا ہے۔ خاندان کے افراد مشکل وقت میں ایک دوسرے کی مدد کرتے ہیں اور خوشیوں میں شریک ہوتے ہیں۔ بڑوں کا احترام اور چھوٹوں کے ساتھ شفقت اچھے خاندانی تعلقات کی بنیاد ہیں۔ گھر میں کھل کر بات کرنا غلط فہمیوں کو کم کر سکتا ہے۔ ہر فرد کو دوسروں کی بات سننے اور ان کے نقطۂ نظر کو سمجھنے کی کوشش کرنی چاہیے۔ جب خاندان کے لوگ ایک دوسرے کا تعاون کرتے ہیں تو گھر کا ماحول پرسکون رہتا ہے۔",
+    roman: "Khandan insan ko muhabbat, tahaffuz aur apnayat ka ehsaas faraham karta hai. Khandan ke afrad mushkil waqt mein aik doosre ki madad karte hain aur khushiyon mein shareek hote hain. Barhon ka ehtram aur chhoton ke saath shafqat achhe khandani talluqat ki bunyad hain. Ghar mein khul kar baat karna ghalat fehmiyon ko kam kar sakta hai. Har fard ko doosron ki baat sunne aur un ke nuqta-e-nazar ko samajhne ki koshish karni chahiye. Jab khandan ke log aik doosre ka taawun karte hain to ghar ka mahol pursukoon rehta hai."
   },
   {
-    urdu: "سفر انسان کو نئی جگہوں اور مختلف ثقافتوں سے واقف ہونے کا موقع دیتا ہے۔ جب ہم کسی نئے شہر یا علاقے میں جاتے ہیں تو وہاں کے لوگوں کے رہن سہن، زبان اور روایات کے بارے میں سیکھتے ہیں۔ سفر کی اچھی منصوبہ بندی سے وقت اور پیسے دونوں کی بچت ہو سکتی ہے۔ مقامی لوگوں کا احترام کرنا، صفائی کا خیال رکھنا اور ماحول کو نقصان نہ پہنچانا ایک ذمہ دار مسافر کی نشانیاں ہیں۔",
-    roman: "Safar insan ko nai jagahon aur mukhtalif saqafaton se waqif hone ka mauqa deta hai. Jab hum kisi naye shehar ya ilaqay mein jate hain to wahan ke logon ke rehan sehan, zaban aur riwayat ke bare mein seekhte hain. Safar ki achhi mansooba bandi se waqt aur paisay dono ki bachat ho sakti hai. Muqami logon ka ehtram karna, safai ka khayal rakhna aur mahol ko nuqsan na pohanchana ek zimmedar musafir ki nishaniyan hain."
+    urdu: "سفر انسان کو نئی جگہوں اور مختلف ثقافتوں سے روشناس کراتا ہے۔ کسی نئے شہر یا علاقے میں جانے سے ہمیں وہاں کے لوگوں کے رہن سہن، زبان اور روایات کو سمجھنے کا موقع ملتا ہے۔ سفر سے پہلے راستے، موسم اور ضروری اخراجات کے بارے میں معلومات حاصل کرنا بہتر ہوتا ہے۔ ہمیں سفر کے دوران اپنے سامان کی حفاظت کرنی چاہیے اور مقامی قوانین کا احترام کرنا چاہیے۔ قدرتی مقامات کی سیر کرتے وقت صفائی کا خیال رکھنا بھی ہماری ذمہ داری ہے۔ منصوبہ بندی کے ساتھ کیا گیا سفر مفید تجربات فراہم کرتا ہے۔",
+    roman: "Safar insan ko nai jagahon aur mukhtalif saqafaton se roshnas karata hai. Kisi naye shehar ya ilaqay mein jane se humein wahan ke logon ke rehan sehan, zaban aur riwayat ko samajhne ka mauqa milta hai. Safar se pehle raste, mausam aur zaroori ikhrajaat ki maloomat hasil karna behtar hota hai. Humein safar mein apne saman ki hifazat karni aur maqami qawaneen ka ehtram karna chahiye. Qudrati maqamat ki sair karte waqt safai ka khayal rakhna bhi hamari zimmedari hai. Mansuba bandi ke saath safar mufeed tajurbaat deta hai."
   },
   {
-    urdu: "پانی زندگی کے لیے بنیادی ضرورت ہے اور اس کے بغیر انسان، جانور اور پودے زندہ نہیں رہ سکتے۔ کئی علاقوں میں صاف پانی کی کمی لوگوں کے لیے ایک بڑا مسئلہ بن چکی ہے۔ نل کھلا نہ چھوڑنا، پانی کو آلودگی سے بچانا اور ضرورت کے مطابق استعمال کرنا اس قیمتی وسیلے کی حفاظت میں مدد دیتا ہے۔ اگر ہر شخص پانی بچانے کی ذمہ داری محسوس کرے تو مستقبل میں بہت سے مسائل کم کیے جا سکتے ہیں۔",
-    roman: "Pani zindagi ke liye bunyadi zaroorat hai aur is ke baghair insan, janwar aur poday zinda nahi reh sakte. Kai ilaqon mein saaf pani ki kami logon ke liye ek bara masla ban chuki hai. Nal khula na chhorna, pani ko aloodgi se bachana aur zaroorat ke mutabiq istemal karna is qeemti wasilay ki hifazat mein madad deta hai. Agar har shakhs pani bachane ki zimmedari mehsoos kare to mustaqbil mein bohat se masail kam kiye ja sakte hain."
+    urdu: "پانی زندگی کے لیے ناگزیر ہے اور اس کے بغیر انسان، جانور اور پودے زندہ نہیں رہ سکتے۔ ہمیں پینے کے صاف پانی کی حفاظت کرنی چاہیے اور اسے ضائع ہونے سے بچانا چاہیے۔ نل کھلا چھوڑ دینا، ضرورت سے زیادہ پانی استعمال کرنا اور آبی ذخائر کو آلودہ کرنا نقصان دہ عادتیں ہیں۔ گھروں اور اسکولوں میں پانی کی بچت کے طریقے اپنائے جا سکتے ہیں۔ بارش کے پانی کو مناسب طریقے سے محفوظ کرنا بھی فائدہ مند ہے۔ آج پانی کی قدر کرنا آنے والی نسلوں کے لیے اس وسیلے کو محفوظ بنانے میں مدد دے گا۔",
+    roman: "Pani zindagi ke liye na guzeer hai aur is ke baghair insan, janwar aur poday zinda nahi reh sakte. Humein peene ke saaf pani ki hifazat karni aur ise zaya hone se bachana chahiye. Nal khula chhor dena, zaroorat se zyada pani istemal karna aur aabi zakhair ko aalooda karna nuqsan deh aadatein hain. Gharon aur schoolon mein pani bachane ke tareeqay apnaye ja sakte hain. Barish ke pani ko munasib tareeqay se mehfooz karna bhi faida mand hai. Aaj pani ki qadar karna anay wali nasaloon ke liye is waseelay ko mehfooz banane mein madad dega."
   },
   {
-    urdu: "ٹیم کے ساتھ کام کرنے سے لوگ ایک دوسرے کے تجربات اور صلاحیتوں سے فائدہ اٹھا سکتے ہیں۔ جب ہر فرد اپنی ذمہ داری سمجھتا ہے تو مشترکہ مقصد حاصل کرنا آسان ہو جاتا ہے۔ اچھا ٹیم ممبر دوسروں کی رائے سنتا ہے، اپنے کام میں دیانت داری دکھاتا ہے اور ضرورت کے وقت ساتھیوں کی مدد کرتا ہے۔ کامیاب ٹیم بنانے کے لیے اعتماد، رابطہ اور ایک دوسرے کے احترام کو اہمیت دینا ضروری ہے۔",
-    roman: "Team ke saath kaam karne se log ek doosre ke tajurbaat aur salahiyaton se faida utha sakte hain. Jab har fard apni zimmedari samajhta hai to mushtarka maqsad hasil karna aasan ho jata hai. Achha team member doosron ki raye sunta hai, apne kaam mein diyanat dari dikhata hai aur zaroorat ke waqt saathiyon ki madad karta hai. Kamyab team banane ke liye aitmad, rabta aur ek doosre ke ehtram ko ahmiyat dena zaroori hai."
+    urdu: "مل کر کام کرنے سے بڑے اور مشکل کام بھی آسان ہو سکتے ہیں۔ جب ایک ٹیم کے افراد اپنی صلاحیتوں اور خیالات کو مشترکہ مقصد کے لیے استعمال کرتے ہیں تو بہتر نتائج حاصل ہونے کے امکانات بڑھ جاتے ہیں۔ اچھی ٹیم میں ہر شخص کی رائے سنی جاتی ہے اور ذمہ داریاں واضح طور پر تقسیم کی جاتی ہیں۔ اختلاف پیدا ہونے پر احترام کے ساتھ گفتگو کرنا ضروری ہے۔ ضرورت کے وقت مدد کرنا ٹیم کے اعتماد کو مضبوط بناتا ہے۔ تعاون کی یہ عادت تعلیم، ملازمت اور روزمرہ زندگی میں فائدہ دیتی ہے۔",
+    roman: "Mil kar kaam karne se baray aur mushkil kaam bhi aasan ho sakte hain. Jab aik team ke afrad apni salahiyaton aur khayalat ko mushtarka maqsad ke liye istemal karte hain to behtar nataij ke imkanaat barh jate hain. Achhi team mein har shakhs ki raye suni jati hai aur zimmedariyan wazeh taur par taqseem hoti hain. Ikhtilaf paida hone par ehtram ke saath guftagu karna zaroori hai. Zaroorat ke waqt madad karna team ke aitmad ko mazboot banata hai. Taawun ki aadat taleem, mulazmat aur rozmarrah zindagi mein faida deti hai."
   },
   {
-    urdu: "موسم میں تبدیلی ہماری روزمرہ زندگی پر مختلف انداز سے اثر انداز ہوتی ہے۔ گرمیوں میں لوگ ٹھنڈی جگہوں اور پانی کی زیادہ ضرورت محسوس کرتے ہیں، جبکہ سردیوں میں گرم کپڑوں کا استعمال بڑھ جاتا ہے۔ بارش زراعت کے لیے فائدہ مند ہو سکتی ہے، لیکن بہت زیادہ بارش مشکلات بھی پیدا کر سکتی ہے۔ موسم کی پیش گوئی سے ہمیں سفر، کام اور روزمرہ سرگرمیوں کی بہتر منصوبہ بندی کرنے میں مدد ملتی ہے۔",
-    roman: "Mausam mein tabdeeli hamari rozmarra zindagi par mukhtalif andaz se asar andaz hoti hai. Garmiyon mein log thandi jagahon aur pani ki zyada zaroorat mehsoos karte hain, jabke sardiyon mein garam kapron ka istemal barh jata hai. Barish zaraat ke liye faida mand ho sakti hai, lekin bohat zyada barish mushkilat bhi paida kar sakti hai. Mausam ki peshgoi se hamein safar, kaam aur rozmarra sargarmiyon ki behtar mansooba bandi karne mein madad milti hai."
+    urdu: "موسم میں تبدیلی ہماری روزمرہ زندگی پر اثر انداز ہوتی ہے۔ گرمیوں میں لوگ ہلکے کپڑے پہنتے ہیں اور زیادہ پانی پینے کی ضرورت محسوس کرتے ہیں، جبکہ سردیوں میں گرم لباس استعمال کیا جاتا ہے۔ بارش فصلوں اور پودوں کے لیے فائدہ مند ہو سکتی ہے، لیکن بہت زیادہ بارش سے سیلاب بھی آ سکتا ہے۔ موسم کی پیش گوئی سے ہمیں سفر اور دیگر سرگرمیوں کی منصوبہ بندی میں مدد ملتی ہے۔ درخت لگانے اور آلودگی کم کرنے جیسے اقدامات موسمی تبدیلیوں کے اثرات محدود کرنے میں مدد دے سکتے ہیں۔",
+    roman: "Mausam mein tabdeeli hamari rozmarrah zindagi par asar انداز hoti hai. Garmiyon mein log halkay kapray pehante aur zyada pani peete hain, jabke sardiyon mein garam libas istemal hota hai. Barish faslon aur podon ke liye faida mand ho sakti hai, lekin bohat zyada barish se sailab bhi aa sakta hai. Mausam ki peshgoi safar aur doosri sargarmiyon ki mansuba bandi mein madad deti hai. Darakht lagane aur aaloodgi kam karne jaise iqdamat mausami tabdeeliyon ke asraat mehdood karne mein madad de sakte hain."
   },
   {
-    urdu: "اچھی گفتگو کے لیے ضروری ہے کہ انسان دوسروں کی بات توجہ سے سنے اور اپنی رائے احترام کے ساتھ بیان کرے۔ بلند آواز میں بات کرنا یا کسی کی بات بار بار کاٹنا غلط فہمیاں پیدا کر سکتا ہے۔ واضح الفاظ اور مناسب لہجہ پیغام کو بہتر انداز میں سمجھانے میں مدد دیتے ہیں۔ جب لوگ ایک دوسرے کو سمجھنے کی کوشش کرتے ہیں تو اختلافات کے باوجود مثبت تعلق قائم رکھنا آسان ہو جاتا ہے۔",
-    roman: "Achhi guftagu ke liye zaroori hai ke insan doosron ki baat tawajjo se sune aur apni raye ehtram ke saath bayan kare. Buland awaz mein baat karna ya kisi ki baat baar baar kaatna ghalat fehmiyan paida kar sakta hai. Wazeh alfaaz aur munasib lehja paigham ko behtar andaz mein samjhane mein madad dete hain. Jab log ek doosre ko samajhne ki koshish karte hain to ikhtilafat ke bawajood musbat talluq qaim rakhna aasan ho jata hai."
+    urdu: "اچھی گفتگو مضبوط تعلقات قائم کرنے میں اہم کردار ادا کرتی ہے۔ بات کرتے وقت واضح الفاظ استعمال کرنا، دوسروں کی بات غور سے سننا اور مناسب لہجہ اختیار کرنا ضروری ہے۔ بعض اوقات ایک ہی بات کو مختلف لوگ مختلف انداز میں سمجھ سکتے ہیں، اس لیے ضرورت پڑنے پر وضاحت مانگنی چاہیے۔ اختلاف رائے کا مطلب یہ نہیں کہ کسی کی عزت کم ہو جاتی ہے۔ پرسکون انداز میں اپنی رائے پیش کرنے سے مسائل حل کرنے میں آسانی ہوتی ہے۔ بہتر گفتگو گھر، اسکول اور معاشرے میں باہمی اعتماد کو فروغ دیتی ہے۔",
+    roman: "Achhi guftagu mazboot talluqat qaim karne mein aham kirdar ada karti hai. Baat karte waqt wazeh alfaaz istemal karna, doosron ki baat ghour se sunna aur munasib lehja ikhtiyar karna zaroori hai. Baaz auqat aik hi baat ko mukhtalif log mukhtalif andaz mein samajhte hain, is liye wazahat mangni chahiye. Ikhtilaf-e-raye ka matlab yeh nahi ke kisi ki izzat kam ho jati hai. Pursukoon andaz mein apni raye paish karne se masail hal karna aasan hota hai. Behtar guftagu ghar, school aur muashray mein bahami aitmad ko farogh deti hai."
   },
   {
-    urdu: "کسی نئے ہنر کو سیکھنے کے لیے وقت، مشق اور صبر کی ضرورت ہوتی ہے۔ ابتدا میں چھوٹی غلطیاں ہونا ایک عام بات ہے اور ان سے گھبرانے کے بجائے سیکھنے کا موقع سمجھنا چاہیے۔ روزانہ تھوڑی سی مشق کرنے سے صلاحیت میں بتدریج اضافہ ہوتا ہے۔ استاد کی رہنمائی، مناسب وسائل اور اپنی کارکردگی کا جائزہ لینے سے سیکھنے کا عمل زیادہ مؤثر اور منظم بنایا جا سکتا ہے۔",
-    roman: "Kisi naye hunar ko seekhne ke liye waqt, mashq aur sabr ki zaroorat hoti hai. Ibtida mein chhoti ghaltiyan hona ek aam baat hai aur un se ghabrane ke bajaye seekhne ka mauqa samajhna chahiye. Rozana thori si mashq karne se salahiyat mein tadreejan izafa hota hai. Ustad ki rehnumai, munasib wasail aur apni karkardagi ka jaiza lene se seekhne ka amal zyada moassar aur munazzam banaya ja sakta hai."
+    urdu: "نئی مہارتیں سیکھنا انسان کی ذاتی اور پیشہ ورانہ ترقی کے لیے ضروری ہے۔ آج کے دور میں کمپیوٹر، زبان، مسئلہ حل کرنے اور مؤثر رابطے کی مہارتیں بہت سے شعبوں میں مدد دیتی ہیں۔ کسی نئی مہارت میں مہارت حاصل کرنے کے لیے مسلسل مشق اور صبر درکار ہوتا ہے۔ شروع میں غلطیاں ہونا سیکھنے کے عمل کا عام حصہ ہے۔ ہمیں اپنی پیش رفت کا جائزہ لینا چاہیے اور جہاں مشکل پیش آئے وہاں رہنمائی حاصل کرنی چاہیے۔ سیکھنے کا شوق انسان کو بدلتے حالات کے مطابق بہتر بناتا ہے۔",
+    roman: "Nai mahارتیں seekhna insan ki zaati aur pesha warana taraqqi ke liye zaroori hai. Aaj ke daur mein computer, zaban, masla hal karne aur moassar rabtay ki mahارتیں bohat se shobon mein madad deti hain. Kisi nai mahارت mein mahارت hasil karne ke liye musalsal mashq aur sabr darkar hota hai. Shuru mein ghaltiyan hona seekhne ke amal ka aam hissa hai. Humein apni pesh raft ka jaiza lena aur mushkil par rehnumai hasil karni chahiye. Seekhne ka shauq insan ko badalte halaat ke mutabiq behtar banata hai."
   },
   {
-    urdu: "صفائی کا خیال رکھنا صحت مند معاشرے کی بنیاد ہے۔ گھر، گلی اور عوامی مقامات کو صاف رکھنے سے بیماریوں کے پھیلاؤ کو کم کرنے میں مدد ملتی ہے۔ کوڑا ہمیشہ مناسب جگہ پر ڈالنا چاہیے اور پلاسٹک کے غیر ضروری استعمال سے بچنے کی کوشش کرنی چاہیے۔ جب لوگ اپنے ماحول کو صاف رکھنے میں حصہ لیتے ہیں تو شہر زیادہ خوبصورت، محفوظ اور رہنے کے قابل بن جاتے ہیں۔",
-    roman: "Safai ka khayal rakhna sehat mand muashray ki bunyad hai. Ghar, gali aur awami maqamat ko saaf rakhne se bemariyon ke phailao ko kam karne mein madad milti hai. Kora hamesha munasib jagah par dalna chahiye aur plastic ke ghair zaroori istemal se bachne ki koshish karni chahiye. Jab log apne mahol ko saaf rakhne mein hissa lete hain to shehar zyada khoobsurat, mehfooz aur rehne ke qabil ban jate hain."
+    urdu: "صفائی صحت مند اور خوشگوار ماحول کے لیے بنیادی ضرورت ہے۔ گھر، گلی، اسکول اور عوامی مقامات کو صاف رکھنا ہر شہری کی ذمہ داری ہے۔ کوڑا کرکٹ مناسب جگہ پر ڈالنے سے گندگی اور بیماریوں کے پھیلاؤ کو کم کیا جا سکتا ہے۔ صاف پانی، مناسب نکاسی اور ہاتھ دھونے کی عادت صحت کی حفاظت میں مدد دیتی ہے۔ ہمیں دوسروں کو بھی صفائی کی اہمیت سمجھانی چاہیے اور خود اچھی مثال قائم کرنی چاہیے۔ جب ہر شخص اپنی ذمہ داری ادا کرتا ہے تو معاشرہ صاف اور محفوظ بن سکتا ہے۔",
+    roman: "Safai sehat mand aur khushgawar mahol ke liye bunyadi zaroorat hai. Ghar, gali, school aur awami maqamat ko saaf rakhna har shehri ki zimmedari hai. Kora karkat munasib jagah par dalne se gandagi aur bemariyon ke phailao ko kam kiya ja sakta hai. Saaf pani, munasib nikasi aur haath dhone ki aadat sehat ki hifazat mein madad deti hai. Humein doosron ko safai ki ahmiyat samjhani aur khud achhi misaal qaim karni chahiye. Har shakhs apni zimmedari ada kare to muashra saaf aur mehfooz ban sakta hai."
   },
   {
-    urdu: "ٹیکنالوجی نے تعلیم، صحت، کاروبار اور رابطوں کے طریقوں میں نمایاں تبدیلی پیدا کی ہے۔ موبائل فون اور کمپیوٹر کے ذریعے لوگ بہت سی خدمات تک آسانی سے رسائی حاصل کر سکتے ہیں۔ اس سہولت کے ساتھ آن لائن دھوکا دہی اور غلط معلومات جیسے خطرات بھی موجود ہیں۔ صارفین کو مضبوط پاس ورڈ استعمال کرنے، مشکوک روابط سے بچنے اور اپنی ذاتی معلومات صرف قابل اعتماد ذرائع کے ساتھ شیئر کرنے کی عادت اپنانی چاہیے۔",
-    roman: "Technology ne taleem, sehat, karobar aur rabton ke tareeqon mein numayan tabdeeli paida ki hai. Mobile phone aur computer ke zariye log bohat si khidmaat tak aasani se rasai hasil kar sakte hain. Is sahulat ke saath online dhoka dahi aur ghalat maloomat jaise khatrat bhi mojood hain. Users ko mazboot password istemal karne, mashkook rawabit se bachne aur apni zaati maloomat sirf qabil e aitmad zaraye ke saath share karne ki aadat apnani chahiye."
+    urdu: "ٹیکنالوجی نے تعلیم، صحت، کاروبار اور رابطے کے طریقوں میں نمایاں تبدیلیاں پیدا کی ہیں۔ کمپیوٹر اور موبائل فون کے ذریعے معلومات تک رسائی پہلے سے کہیں زیادہ آسان ہو گئی ہے۔ آن لائن خدمات لوگوں کا وقت بچاتی ہیں اور کئی کام گھر بیٹھے مکمل کیے جا سکتے ہیں۔ اس کے باوجود ٹیکنالوجی کے استعمال میں توازن ضروری ہے، کیونکہ اسکرین کے سامنے بہت زیادہ وقت گزارنا روزمرہ سرگرمیوں کو متاثر کر سکتا ہے۔ ہمیں ذاتی معلومات محفوظ رکھنے اور ڈیجیٹل ذرائع ذمہ داری سے استعمال کرنے چاہئیں۔",
+    roman: "Technology ne taleem, sehat, karobar aur rabtay ke tareeqon mein numayan tabdeeliyan paida ki hain. Computer aur mobile phone ke zariye maloomat tak rasai pehle se zyada aasan ho gayi hai. Online khidmaat logon ka waqt bachati hain aur kai kaam ghar baithe mukammal kiye ja sakte hain. Is ke bawajood technology ke istemal mein tawazun zaroori hai, kyun ke screen ke samne zyada waqt guzarna rozmarrah sargarmiyon ko mutasir kar sakta hai. Humein zaati maloomat mehfooz rakhni aur digital zaraye zimmedari se istemal karne chahiye."
   },
   {
-    urdu: "کامیاب مستقبل کے لیے واضح مقصد مقرر کرنا اور اس کے مطابق عملی قدم اٹھانا ضروری ہے۔ بڑے مقصد کو چھوٹے مراحل میں تقسیم کرنے سے کام زیادہ قابل انتظام ہو جاتا ہے۔ اپنی پیش رفت کا باقاعدہ جائزہ لینے سے معلوم ہوتا ہے کہ کون سے طریقے مؤثر ہیں اور کہاں بہتری کی ضرورت ہے۔ اگر انسان سیکھنے کا جذبہ برقرار رکھے اور مشکلات کے باوجود کوشش جاری رکھے تو وہ اپنے مقصد کے قریب پہنچ سکتا ہے۔",
-    roman: "Kamyab mustaqbil ke liye wazeh maqsad muqarrar karna aur us ke mutabiq amali qadam uthana zaroori hai. Baray maqsad ko chhotay marahil mein taqseem karne se kaam zyada qabil e intizam ho jata hai. Apni pesh raft ka baqaida jaiza lene se maloom hota hai ke kaun se tareeqay moassar hain aur kahan behtari ki zaroorat hai. Agar insan seekhne ka jazba barqarar rakhe aur mushkilat ke bawajood koshish jari rakhe to woh apne maqsad ke qareeb pohanch sakta hai."
+    urdu: "مستقبل کے لیے واضح اہداف مقرر کرنا انسان کو اپنی کوششوں کی سمت متعین کرنے میں مدد دیتا ہے۔ ہمیں بڑے مقاصد کو چھوٹے اور قابل عمل مراحل میں تقسیم کرنا چاہیے۔ اس طرح روزانہ کی پیش رفت کو سمجھنا اور مشکلات کی نشاندہی کرنا آسان ہو جاتا ہے۔ منصوبہ بناتے وقت اپنی دلچسپیوں، صلاحیتوں اور دستیاب وسائل کو مدنظر رکھنا ضروری ہے۔ اگر حالات بدل جائیں تو منصوبے میں مناسب تبدیلی کی جا سکتی ہے۔ مستقل کوشش اور سیکھنے کا جذبہ انسان کو مستقبل کی بہتر تیاری میں مدد دیتا ہے۔",
+    roman: "Mustaqbil ke liye wazeh hadaf muqarrar karna insan ko apni koshishon ki simt tay karne mein madad deta hai. Humein baray maqasid ko chhotay aur qabil-e-amal marahil mein taqseem karna chahiye. Is tarah rozana ki pesh raft ko samajhna aur mushkilat ki nishandahi karna aasan ho jata hai. Mansooba banate waqt apni dilchaspi, salahiyaton aur dastiyab wasail ko madde nazar rakhna zaroori hai. Halaat badalne par mansoobay mein tabdeeli ki ja sakti hai. Mustaqil koshish aur seekhne ka jazba mustaqbil ki behtar tayari mein madad deta hai."
   },
   {
-    urdu: "معاشرے کی ترقی میں ہر شہری کی ذمہ داری اہم ہوتی ہے۔ قانون کی پابندی کرنا، دوسروں کے حقوق کا احترام کرنا اور ضرورت مند افراد کی مدد کرنا مثبت شہری رویوں کی مثالیں ہیں۔ اختلاف رائے کے باوجود ایک دوسرے کے ساتھ انصاف اور برداشت کا مظاہرہ کرنا معاشرتی ہم آہنگی کو مضبوط بناتا ہے۔ جب لوگ مشترکہ مسائل کے حل کے لیے تعاون کرتے ہیں تو ان کا ماحول زیادہ پرامن اور بہتر بن سکتا ہے۔",
-    roman: "Muashray ki taraqqi mein har shehri ki zimmedari aham hoti hai. Qanoon ki pabandi karna, doosron ke huqooq ka ehtram karna aur zaroorat mand afrad ki madad karna musbat shehri rawaiyon ki misalein hain. Ikhtilaf e raye ke bawajood ek doosre ke saath insaf aur bardasht ka muzahira karna muashrati hum ahangi ko mazboot banata hai. Jab log mushtarka masail ke hal ke liye taawun karte hain to un ka mahol zyada puraman aur behtar ban sakta hai."
+    urdu: "ایک بہتر معاشرہ بنانے کے لیے ہر شہری کو اپنی ذمہ داریوں کا احساس ہونا چاہیے۔ قوانین کی پابندی، دوسروں کے حقوق کا احترام اور ضرورت مند افراد کی مدد مثبت معاشرتی رویوں کی مثالیں ہیں۔ ہمیں اختلافات کے باوجود ایک دوسرے کے ساتھ عزت سے پیش آنا چاہیے۔ عوامی مقامات اور مشترکہ وسائل کی حفاظت کرنا بھی ہماری ذمہ داری ہے۔ جب شہری ایمانداری سے اپنا کردار ادا کرتے ہیں تو معاشرے میں اعتماد اور تعاون بڑھتا ہے۔ چھوٹے مگر مستقل اچھے اقدامات اجتماعی ترقی کی بنیاد بن سکتے ہیں۔",
+    roman: "Aik behtar muashra banane ke liye har shehri ko apni zimmedariyon ka ehsaas hona chahiye. Qawaneen ki pabandi, doosron ke huqooq ka ehtram aur zaroorat mand afrad ki madad musbat rawaiyon ki misaalein hain. Humein ikhtilafat ke bawajood aik doosre ke saath izzat se paish aana chahiye. Awami maqamat aur mushtarka wasail ki hifazat karna bhi hamari zimmedari hai. Jab shehri imandari se apna kirdar ada karte hain to muashray mein aitmad aur taawun barhta hai. Chhotay magar mustaqil achhe iqdamat ijtimai taraqqi ki bunyad hain."
+  },
+  {
+    urdu: "دوستی انسان کی زندگی میں خوشی اور حوصلے کا ایک اہم ذریعہ بن سکتی ہے۔ اچھے دوست ایک دوسرے کی بات سنتے ہیں، مشکل وقت میں ساتھ دیتے ہیں اور بہتر فیصلے کرنے میں مدد کرتے ہیں۔ سچی دوستی صرف تفریح تک محدود نہیں ہوتی بلکہ اس میں اعتماد، احترام اور ایمانداری بھی شامل ہوتی ہے۔ ہمیں دوستوں کی کامیابی پر خوش ہونا چاہیے اور اختلاف کی صورت میں شائستگی سے بات کرنی چاہیے۔ دوستی مضبوط رکھنے کے لیے وقت دینا، وعدے پورے کرنا اور ایک دوسرے کی حدود کا احترام کرنا ضروری ہے۔",
+    roman: "Dosti insan ki zindagi mein khushi aur hoslay ka aik aham zariya ban sakti hai. Achhe dost aik doosre ki baat sunte hain, mushkil waqt mein saath dete hain aur behtar faislay karne mein madad karte hain. Sachi dosti sirf tafreeh tak mehdood nahi hoti balkay is mein aitmad, ehtram aur imandari bhi shamil hoti hai. Humein doston ki kamyabi par khush hona aur ikhtilaf ki surat mein shaistagi se baat karni chahiye. Dosti mazboot rakhne ke liye waqt dena, waday poore karna aur aik doosre ki hudood ka ehtram zaroori hai."
   }
 ];
 
-let currentIndex = 0;
-let mediaRecorder = null;
-let recordingChunks = [];
-let recordingStream = null;
-let audioPlayer = null;
-let isUploading = false;
-let startingRecording = false;
-const recordings = {};
+const TOTAL = 20;
+const MAX_SECONDS = 45;
 
-function language() {
-  return document.querySelector('input[name="language"]:checked').value;
+let currentIndex = 0;
+let selectedLanguage = "urdu";
+let mediaRecorder = null;
+let recordingStream = null;
+let chunks = [];
+let startedAt = 0;
+let startingRecording = false;
+let submitted = false;
+let timerInterval = null;
+let playbackUrl = null;
+let activeRecordingIndex = null;
+
+const recordings = {};
+const $ = id => document.getElementById(id);
+
+function setStatus(message, type = "") {
+  $("status").textContent = message;
+  $("status").className = "status " + type;
 }
 
-function startForm() {
-  const name = document.getElementById("name").value.trim();
-  const pid = document.getElementById("pid").value.trim();
+function safeId(value) {
+  return value.trim().replace(/[^A-Za-z0-9_-]/g, "_");
+}
+
+function fileExtension(type) {
+  if (type && type.includes("mp4")) return "mp4";
+  if (type && type.includes("ogg")) return "ogg";
+  if (type && type.includes("wav")) return "wav";
+  return "webm";
+}
+
+$("startButton").addEventListener("click", () => {
+  const name = $("participantName").value.trim();
+  const id = $("participantId").value.trim();
 
   if (!name) {
-    alert("Please enter your participant name.");
-    document.getElementById("name").focus();
+    alert("Please enter your name.");
     return;
   }
 
-  if (!/^[A-Za-z0-9_-]{2,40}$/.test(pid)) {
-    alert("Participant ID must contain 2-40 letters, numbers, _ or -.");
-    document.getElementById("pid").focus();
+  if (!/^[A-Za-z0-9_-]{2,40}$/.test(id)) {
+    alert("Participant ID must be 2–40 characters and use letters, numbers, _ or -.");
     return;
   }
 
-  document.getElementById("startSection").style.display = "none";
-  document.getElementById("workspace").style.display = "block";
+  selectedLanguage = document.querySelector(
+    'input[name="language"]:checked'
+  ).value;
+
+  $("displayName").textContent = name;
+  $("displayId").textContent = id;
+  $("displayLanguage").textContent =
+    selectedLanguage === "urdu" ? "Urdu" : "Roman Urdu";
 
   document.querySelectorAll('input[name="language"]').forEach(input => {
     input.disabled = true;
   });
 
-  render();
-}
+  $("participantForm").classList.add("hidden");
+  $("workspace").classList.remove("hidden");
 
-function completedCount() {
-  return Object.keys(recordings).filter(key =>
-    Number(key) >= 0 &&
-    Number(key) < 20 &&
-    recordings[key] &&
-    recordings[key].dataUrl
-  ).length;
+  render();
+  setStatus("Ready. Start recording Paragraph 1.");
+});
+
+function isRecording() {
+  return mediaRecorder && mediaRecorder.state === "recording";
 }
 
 function render() {
-  const paragraph = paragraphs[currentIndex];
-  const selectedLanguage = language();
-  const textElement = document.getElementById("paragraphText");
+  $("paragraphHeading").textContent =
+    `Paragraph ${currentIndex + 1} of ${TOTAL}`;
 
-  document.getElementById("paragraphHeading").textContent =
-    "Paragraph " + (currentIndex + 1);
+  $("paragraphText").textContent =
+    paragraphs[currentIndex][selectedLanguage];
 
-  if (selectedLanguage === "Urdu") {
-    textElement.textContent = paragraph.urdu;
-    textElement.classList.add("urdu");
-    textElement.lang = "ur";
+  $("paragraphText").classList.toggle(
+    "urdu",
+    selectedLanguage === "urdu"
+  );
+
+  const rec = recordings[currentIndex];
+
+  $("recordingInfo").textContent = rec
+    ? `Completed • ${rec.duration.toFixed(1)} seconds • Recording locked`
+    : "Not recorded yet";
+
+  const completed = Object.keys(recordings).length;
+
+  $("progressText").textContent =
+    `${completed} of ${TOTAL} recordings completed`;
+
+  $("progressBar").style.width = `${completed / TOTAL * 100}%`;
+
+  if (isRecording()) {
+    $("recordButton").textContent = "Stop Recording";
+  } else if (rec) {
+    $("recordButton").textContent = "Recording Completed";
   } else {
-    textElement.textContent = paragraph.roman;
-    textElement.classList.remove("urdu");
-    textElement.lang = "en";
+    $("recordButton").textContent = "Start Recording";
   }
 
-  const count = completedCount();
-  const recordingNow = mediaRecorder &&
-    mediaRecorder.state === "recording";
+  $("recordButton").disabled =
+    submitted || startingRecording || (!isRecording() && !!rec);
 
-  document.getElementById("paragraphCounter").textContent =
-    "Paragraph " + (currentIndex + 1) + " of 20";
+  $("playButton").disabled = !rec || isRecording();
+  $("downloadButton").disabled = !rec || isRecording();
 
-  document.getElementById("recordingCounter").textContent =
-    count + " of 20 recordings completed";
+  $("previousButton").disabled =
+    currentIndex === 0 || isRecording() || startingRecording;
 
-  document.getElementById("progressFill").style.width =
-    (count / 20 * 100) + "%";
+  $("nextButton").disabled =
+    currentIndex === TOTAL - 1 || isRecording() || startingRecording;
 
-  document.getElementById("previousButton").disabled =
-    currentIndex === 0 || !!recordingNow ||
-    isUploading || startingRecording;
+  $("downloadAllButton").disabled =
+    completed === 0 || isRecording() || startingRecording;
 
-  document.getElementById("nextButton").disabled =
-    currentIndex === 19 || !!recordingNow ||
-    isUploading || startingRecording;
-
-  document.getElementById("playButton").disabled =
-    !recordings[currentIndex] || !!recordingNow ||
-    isUploading || startingRecording;
-
-  const recordButton = document.getElementById("recordButton");
-  recordButton.disabled = isUploading || startingRecording;
-  recordButton.textContent = recordingNow
-    ? "Stop Recording"
-    : startingRecording ? "Starting..." : "Record";
-  recordButton.classList.toggle("stop-btn", !!recordingNow);
-
-  const status = document.getElementById("recordingStatus");
-
-  if (recordingNow) {
-    status.textContent =
-      "Recording chal rahi hai. Bolne ke baad Stop Recording dabayein.";
-  } else if (recordings[currentIndex]) {
-    status.textContent =
-      "Recording complete hai. Play karein ya dobara record karein.";
-  } else {
-    status.textContent =
-      "Is paragraph ki recording abhi nahi hui. Record dabakar shuru karein.";
-  }
-
-  document.getElementById("saveButton").disabled =
-    isUploading || startingRecording || count !== 20;
+  $("saveButton").disabled =
+    completed !== TOTAL || isRecording() || startingRecording || submitted;
 }
 
-function stopTracks(stream) {
-  if (stream) {
-    stream.getTracks().forEach(track => track.stop());
-  }
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("Unable to read audio data."));
+    reader.readAsDataURL(blob);
+  });
 }
 
 async function toggleRecord() {
-  if (startingRecording || isUploading) return;
-
-  if (mediaRecorder && mediaRecorder.state === "recording") {
-    mediaRecorder.stop();
+  if (isRecording()) {
+    stopRecording(false);
     return;
   }
 
-  if (!window.isSecureContext ||
-      !navigator.mediaDevices ||
-      typeof navigator.mediaDevices.getUserMedia !== "function") {
-    alert(
-      "Microphone access available nahi hai. Deployed HTTPS Apps Script URL ko Chrome ke naye tab mein kholein."
+  if (submitted || startingRecording) return;
+
+  if (recordings[currentIndex]) {
+    setStatus(
+      "This paragraph is already recorded and locked. Move to the next paragraph.",
+      "error"
     );
     return;
   }
 
-  if (typeof window.MediaRecorder !== "function") {
-    alert("Audio recording support nahi hai. Updated Chrome use karein.");
+  if (!navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia ||
+      !window.MediaRecorder) {
+    setStatus(
+      "Recording is not supported here. Open your GitHub Pages HTTPS website in Chrome.",
+      "error"
+    );
     return;
   }
 
   startingRecording = true;
   render();
+  setStatus("Requesting microphone permission...");
 
   let stream = null;
 
   try {
-    stream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true
-      }
-    });
-
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     recordingStream = stream;
-    recordingChunks = [];
+    chunks = [];
+    activeRecordingIndex = currentIndex;
 
-    const supportedTypes = [
+    const types = [
       "audio/webm;codecs=opus",
       "audio/webm",
       "audio/mp4",
       "audio/ogg;codecs=opus"
     ];
 
-    let mimeType = "";
+    const mime = types.find(type => MediaRecorder.isTypeSupported(type));
 
-    for (const type of supportedTypes) {
-      if (MediaRecorder.isTypeSupported(type)) {
-        mimeType = type;
-        break;
-      }
-    }
-
-    const recorder = mimeType
-      ? new MediaRecorder(stream, { mimeType })
+    mediaRecorder = mime
+      ? new MediaRecorder(stream, { mimeType: mime })
       : new MediaRecorder(stream);
 
-    mediaRecorder = recorder;
-
-    const paragraphIndex = currentIndex;
-    const selectedLanguage = language();
-    const startedAt = Date.now();
+    const recorder = mediaRecorder;
+    startedAt = Date.now();
 
     recorder.ondataavailable = event => {
       if (event.data && event.data.size > 0) {
-        recordingChunks.push(event.data);
+        chunks.push(event.data);
       }
     };
 
     recorder.onerror = event => {
-      const detail = event.error
-        ? event.error.message
-        : "Unknown recording error";
-
-      document.getElementById("recordingStatus").textContent =
-        "Recording error: " + detail;
+      console.error("Recorder error", event.error);
+      setStatus(
+        "Recording error: " + (event.error?.message || "Unknown error"),
+        "error"
+      );
     };
 
-    recorder.onstop = () => {
-      const chunks = recordingChunks.slice();
-      recordingChunks = [];
+    recorder.onstop = async () => {
+      clearInterval(timerInterval);
+      timerInterval = null;
 
-      stopTracks(stream);
-
-      if (recordingStream === stream) recordingStream = null;
-      if (mediaRecorder === recorder) mediaRecorder = null;
+      const duration = Math.min(
+        MAX_SECONDS,
+        (Date.now() - startedAt) / 1000
+      );
 
       const blob = new Blob(chunks, {
         type: recorder.mimeType || "audio/webm"
       });
 
-      const duration = Math.max(
-        1,
-        Math.round((Date.now() - startedAt) / 1000)
-      );
+      stream.getTracks().forEach(track => track.stop());
+
+      recordingStream = null;
+      mediaRecorder = null;
+      startingRecording = false;
+
+      $("timerText").textContent = "45 seconds";
 
       if (!blob.size) {
         render();
-        document.getElementById("recordingStatus").textContent =
-          "Audio capture nahi hui. Dobara record karein.";
+        setStatus("No audio was captured. Please check your microphone.", "error");
         return;
       }
 
-      const reader = new FileReader();
+      try {
+        const dataUrl = await blobToDataUrl(blob);
+        const index = activeRecordingIndex;
 
-      reader.onload = () => {
-        if (typeof reader.result !== "string") {
-          render();
-          document.getElementById("recordingStatus").textContent =
-            "Audio process nahi hui. Dobara record karein.";
-          return;
-        }
-
-        recordings[paragraphIndex] = {
-          dataUrl: reader.result,
-          duration: duration,
-          language: selectedLanguage
+        recordings[index] = {
+          dataUrl,
+          duration,
+          language: selectedLanguage,
+          mimeType: blob.type,
+          filename:
+            `participant_${safeId($("participantId").value)}_paragraph_${index + 1}.${fileExtension(blob.type)}`
         };
 
-        if (completedCount() === 20) currentIndex = 0;
-
         render();
-        document.getElementById("recordingStatus").textContent =
-          "Recording save ho gayi. Duration: " + duration + " seconds.";
-      };
-
-      reader.onerror = () => {
+        setStatus(
+          `Paragraph ${index + 1} saved in this page and locked. You cannot record it again.`,
+          "success"
+        );
+      } catch (error) {
         render();
-        document.getElementById("recordingStatus").textContent =
-          "Audio process nahi hui. Dobara record karein.";
-      };
-
-      reader.readAsDataURL(blob);
+        setStatus("Unable to save audio in memory: " + error.message, "error");
+      }
     };
 
-    recorder.start(1000);
+    recorder.start(250);
     startingRecording = false;
     render();
+    setStatus("Recording started. You have 45 seconds.");
 
-    document.getElementById("recordingStatus").textContent =
-      "Recording chal rahi hai. Bolne ke baad Stop Recording dabayein.";
-
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 100);
   } catch (error) {
-    stopTracks(stream);
-    if (recordingStream === stream) recordingStream = null;
+    if (stream) stream.getTracks().forEach(track => track.stop());
+
+    recordingStream = null;
     mediaRecorder = null;
-
-    const messages = {
-      NotAllowedError:
-        "Microphone access block hai. Chrome Site Settings mein Microphone Allow karein. Agar pehle se Allow hai, to browser ya iframe policy access rok sakti hai.",
-      PermissionDeniedError:
-        "Microphone permission denied hai. Chrome microphone settings check karein.",
-      NotFoundError:
-        "Microphone device nahi mila. Apna microphone connect karein.",
-      NotReadableError:
-        "Microphone doosri application mein use ho raha ho sakta hai.",
-      SecurityError:
-        "Browser security ki wajah se microphone access nahi mil raha. HTTPS par deployed app kholein."
-    };
-
-    const message = messages[error.name] ||
-      "Recording start nahi hui: " +
-      (error.message || error.name || "Unknown error");
-
     startingRecording = false;
     render();
-    document.getElementById("recordingStatus").textContent = message;
-    alert(message);
 
-  } finally {
-    startingRecording = false;
-    render();
+    if (error.name === "NotAllowedError" || error.name === "SecurityError") {
+      setStatus(
+        "Microphone access denied. Check Chrome site permissions and open the GitHub Pages HTTPS URL directly in a tab.",
+        "error"
+      );
+    } else if (error.name === "NotFoundError") {
+      setStatus("No microphone detected. Connect a microphone and try again.", "error");
+    } else if (error.name === "NotReadableError") {
+      setStatus("The microphone may be in use by another application.", "error");
+    } else {
+      setStatus(`${error.name}: ${error.message}`, "error");
+    }
   }
 }
 
-function playRecording() {
-  const rec = recordings[currentIndex];
-
-  if (!rec || !rec.dataUrl) {
-    document.getElementById("recordingStatus").textContent =
-      "Is paragraph ki recording abhi nahi hui.";
+function updateTimer() {
+  if (!isRecording()) {
+    clearInterval(timerInterval);
+    timerInterval = null;
     return;
   }
 
-  if (mediaRecorder && mediaRecorder.state === "recording") {
-    alert("Pehle recording stop karein.");
-    return;
+  const elapsed = (Date.now() - startedAt) / 1000;
+  const remaining = Math.max(0, Math.ceil(MAX_SECONDS - elapsed));
+
+  $("timerText").textContent = `${remaining} seconds remaining`;
+
+  if (remaining <= 0) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    setStatus("45 seconds completed. Recording stopped automatically.", "success");
+    stopRecording(true);
   }
-
-  if (audioPlayer) {
-    audioPlayer.pause();
-    audioPlayer.currentTime = 0;
-  }
-
-  audioPlayer = new Audio(rec.dataUrl);
-
-  audioPlayer.onerror = () => {
-    document.getElementById("recordingStatus").textContent =
-      "Playback fail hua. Dobara record karein.";
-  };
-
-  audioPlayer.play().then(() => {
-    document.getElementById("recordingStatus").textContent =
-      "Paragraph " + (currentIndex + 1) + " ki recording play ho rahi hai.";
-  }).catch(error => {
-    document.getElementById("recordingStatus").textContent =
-      "Playback start nahi hui: " + (error.message || "Unknown error");
-  });
 }
+
+function stopRecording(autoStopped) {
+  if (!isRecording()) return;
+
+  clearInterval(timerInterval);
+  timerInterval = null;
+
+  if (autoStopped) {
+    $("timerText").textContent = "Time completed";
+  }
+
+  mediaRecorder.stop();
+  $("recordButton").disabled = true;
+  $("recordButton").textContent = "Saving recording...";
+}
+
+$("recordButton").addEventListener("click", toggleRecord);
 
 function moveParagraph(direction) {
-  if (startingRecording || isUploading) return;
-
-  if (mediaRecorder && mediaRecorder.state === "recording") {
-    alert("Paragraph change karne se pehle recording stop karein.");
+  if (isRecording() || startingRecording) {
+    setStatus("Stop recording before changing paragraphs.", "error");
     return;
   }
 
-  const nextIndex = currentIndex + direction;
-  if (nextIndex < 0 || nextIndex >= paragraphs.length) return;
+  currentIndex = Math.max(
+    0,
+    Math.min(TOTAL - 1, currentIndex + direction)
+  );
 
-  if (audioPlayer) {
-    audioPlayer.pause();
-    audioPlayer.currentTime = 0;
-    audioPlayer = null;
-  }
+  $("timerText").textContent = recordings[currentIndex]
+    ? "Recording completed"
+    : "45 seconds";
 
-  currentIndex = nextIndex;
   render();
+  setStatus(`Paragraph ${currentIndex + 1} of ${TOTAL}.`);
 }
 
-function serverCall(method, data) {
-  return new Promise((resolve, reject) => {
-    if (typeof google === "undefined" ||
-        !google.script ||
-        !google.script.run) {
-      reject(new Error(
-        "Google Apps Script backend available nahi. Deployed web app URL use karein."
-      ));
-      return;
-    }
+$("previousButton").addEventListener("click", () => moveParagraph(-1));
+$("nextButton").addEventListener("click", () => moveParagraph(1));
 
-    const runner = google.script.run
-      .withSuccessHandler(resolve)
-      .withFailureHandler(error => {
-        reject(new Error(error.message || String(error)));
-      });
+function dataUrlToBlob(dataUrl) {
+  const parts = dataUrl.split(",");
+  const mime = parts[0].match(/:(.*?);/)[1];
+  const binary = atob(parts[1]);
+  const bytes = new Uint8Array(binary.length);
 
-    if (typeof runner[method] !== "function") {
-      reject(new Error("Backend function nahi mili: " + method));
-      return;
-    }
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
 
-    runner[method](data);
+  return new Blob([bytes], { type: mime });
+}
+
+$("playButton").addEventListener("click", () => {
+  const rec = recordings[currentIndex];
+  if (!rec) return;
+
+  const audio = new Audio(rec.dataUrl);
+
+  audio.play().catch(error => {
+    setStatus("Could not play recording: " + error.message, "error");
   });
+});
+
+$("downloadButton").addEventListener("click", () => {
+  const rec = recordings[currentIndex];
+  if (!rec) return;
+
+  downloadDataUrl(rec.dataUrl, rec.filename);
+});
+
+function downloadDataUrl(dataUrl, filename) {
+  const link = document.createElement("a");
+  link.href = dataUrl;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 }
 
-async function saveRecordings() {
-  if (isUploading || startingRecording) return;
+$("downloadAllButton").addEventListener("click", () => {
+  const exportData = {
+    participantName: $("participantName").value.trim(),
+    participantId: $("participantId").value.trim(),
+    language: selectedLanguage,
+    exportedAt: new Date().toISOString(),
+    totalParagraphs: TOTAL,
+    recordings: paragraphs.map((paragraph, index) => {
+      const rec = recordings[index];
 
-  if (mediaRecorder && mediaRecorder.state === "recording") {
-    alert("Save karne se pehle recording stop karein.");
+      return {
+        paragraphNumber: index + 1,
+        text: paragraph[selectedLanguage],
+        language: selectedLanguage,
+        duration: rec ? rec.duration : null,
+        mimeType: rec ? rec.mimeType : null,
+        audioDataUrl: rec ? rec.dataUrl : null
+      };
+    })
+  };
+
+  const blob = new Blob(
+    [JSON.stringify(exportData, null, 2)],
+    { type: "application/json" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download =
+    `voice_dataset_${safeId($("participantId").value)}.json`;
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  setStatus(
+    "Dataset JSON downloaded. It contains your audio recordings; keep the file private.",
+    "success"
+  );
+});
+
+$("saveButton").addEventListener("click", () => {
+  if (Object.keys(recordings).length !== TOTAL) {
+    setStatus("Please complete all 20 recordings first.", "error");
     return;
   }
 
-  if (completedCount() !== 20) {
-    alert("Save karne se pehle tamam 20 recordings complete karein.");
-    return;
+  setStatus(
+    "Google Drive upload is not connected to this GitHub Pages page yet. Export Dataset JSON to save your recordings locally.",
+    "error"
+  );
+});
+
+/* Prevent an accidental page close from going unnoticed. */
+window.addEventListener("beforeunload", event => {
+  if (Object.keys(recordings).length > 0 && !submitted) {
+    event.preventDefault();
+    event.returnValue = "";
   }
+});
 
-  const name = document.getElementById("name").value.trim();
-  const participantId = document.getElementById("pid").value.trim();
-  const status = document.getElementById("uploadStatus");
-  const saveButton = document.getElementById("saveButton");
-
-  const allRecordings = Array.from({ length: 20 }, (_, i) => {
-    const rec = recordings[i];
-    if (!rec || !rec.dataUrl) return null;
-
-    return {
-      paragraphNumber: i + 1,
-      language: rec.language,
-      duration: rec.duration || 0,
-      audio: rec.dataUrl
-    };
-  });
-
-  if (allRecordings.some(rec => !rec || !rec.audio)) {
-    alert("Koi recording missing hai. Tamam paragraphs check karein.");
-    return;
-  }
-
-  isUploading = true;
-  saveButton.disabled = true;
-  status.textContent = "Upload shuru ho raha hai...";
-  render();
-
-  try {
-    const started = await serverCall("startRecordingUpload", {
-      name: name,
-      participantId: participantId
-    });
-
-    if (!started || !started.token) {
-      throw new Error(
-        started && started.message
-          ? started.message
-          : "Backend ne upload token return nahi kiya."
-      );
-    }
-
-    const token = started.token;
-
-    for (let start = 0; start < 20; start += 2) {
-      const batch = allRecordings.slice(start, start + 2);
-
-      status.textContent =
-        "Recordings " + (start + 1) + "–" +
-        (start + batch.length) + " of 20 upload ho rahi hain...";
-
-      const result = await serverCall("uploadRecordingBatch", {
-        participantId: participantId,
-        token: token,
-        recordings: batch
-      });
-
-      if (result && result.success === false) {
-        throw new Error(result.message || "Batch upload fail hua.");
-      }
-    }
-
-    status.textContent = "Final verification ho rahi hai...";
-
-    const finished = await serverCall("finishRecordingUpload", {
-      participantId: participantId,
-      token: token
-    });
-
-    if (finished && finished.success === false) {
-      throw new Error(finished.message || "Final verification fail hui.");
-    }
-
-    status.textContent = finished && finished.message
-      ? finished.message
-      : "Tamam recordings upload ho gayi hain.";
-
-    saveButton.textContent = "Submitted Successfully";
-    saveButton.disabled = true;
-
-    document.getElementById("recordButton").disabled = true;
-    document.getElementById("playButton").disabled = true;
-    document.getElementById("previousButton").disabled = true;
-    document.getElementById("nextButton").disabled = true;
-
-    alert(status.textContent);
-
-  } catch (error) {
-    status.textContent =
-      "Upload failed: " + error.message +
-      ". Page refresh na karein; recordings filhal isi page par hain.";
-
-    alert(
-      "Upload failed:\n" + error.message +
-      "\n\nPage refresh ya close na karein."
-    );
-
-    saveButton.textContent = "Save Recordings";
-    saveButton.disabled = false;
-
-  } finally {
-    isUploading = false;
-    render();
-
-    if (saveButton.textContent === "Submitted Successfully") {
-      saveButton.disabled = true;
-    } else {
-      saveButton.disabled = completedCount() !== 20;
-    }
-  }
+if (paragraphs.length !== TOTAL) {
+  document.body.innerHTML =
+    "<h2>Setup error: exactly 20 paragraphs are required.</h2>";
 }
-
-render();
 </script>
 </body>
 </html>
-```
