@@ -1,1 +1,33 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Microphone Test</title>
+</head>
+<body style="font-family:Arial;text-align:center;padding:40px">
+  <h1>Urdu Voice Recording</h1>
+  <p>GitHub Pages is working!</p>
+  <button id="record">Test Microphone</button>
+  <p id="status">Button dabayein.</p>
+
+  <script>
+    document.getElementById("record").onclick = async () => {
+      const status = document.getElementById("status");
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true
+        });
+
+        status.textContent = "Microphone working successfully!";
+        stream.getTracks().forEach(track => track.stop());
+      } catch (error) {
+        status.textContent = error.name + ": " + error.message;
+      }
+    };
+  </script>
+</body>
+</html>
+
