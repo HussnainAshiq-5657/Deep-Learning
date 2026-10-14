@@ -8,967 +8,721 @@
 
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --primary-light: #eff6ff;
-      --background: #f4f7fb;
-      --surface: #ffffff;
+      --primary: #1769e0;
+      --primary-dark: #1052b5;
+      --bg: #f3f6fb;
       --text: #172033;
       --muted: #64748b;
-      --border: #e2e8f0;
-      --success: #15803d;
-      --danger: #dc2626;
-      --radius: 18px;
+      --border: #dce4ef;
+      --success: #16804a;
+      --danger: #c62828;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: Arial, "Noto Sans Arabic", sans-serif;
-      background: var(--background);
+      background: var(--bg);
       color: var(--text);
+      font-family: Arial, "Noto Nastaliq Urdu", sans-serif;
       line-height: 1.6;
     }
 
-    button, input, select {
-      font: inherit;
-    }
-
-    .hero {
+    .topbar {
+      background: linear-gradient(135deg, #1459c7, #287ff0);
       color: white;
-      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
-      padding: 36px 20px 58px;
+      padding: 28px 18px;
       text-align: center;
     }
 
-    .hero-icon {
-      width: 62px;
-      height: 62px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 12px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.17);
-      font-size: 30px;
+    .topbar h1 {
+      margin: 0 0 6px;
+      font-size: clamp(23px, 4vw, 32px);
     }
 
-    .hero h1 {
-      margin: 0 0 8px;
-      font-size: clamp(25px, 4vw, 36px);
-    }
-
-    .hero p {
-      max-width: 620px;
-      margin: auto;
-      color: #eaf2ff;
-    }
+    .topbar p { margin: 0; opacity: .94; }
 
     .container {
-      width: min(920px, calc(100% - 28px));
-      margin: -30px auto 40px;
-      position: relative;
+      width: min(920px, 94%);
+      margin: 24px auto 44px;
     }
 
     .card {
-      background: var(--surface);
+      background: white;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: clamp(18px, 4vw, 28px);
-      margin-bottom: 20px;
-      box-shadow: 0 8px 28px rgba(15, 23, 42, 0.045);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 5px 20px rgba(30, 55, 90, .05);
     }
 
-    .section-title {
-      margin: 0 0 18px;
-      font-size: 19px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    h2 { margin: 0 0 16px; font-size: 21px; }
 
-    .section-number {
-      width: 34px;
-      height: 34px;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      background: var(--primary-light);
-      color: var(--primary);
-      border-radius: 11px;
-      font-weight: bold;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
+    .field { margin-bottom: 16px; }
 
     label {
-      font-size: 14px;
+      display: block;
       font-weight: 700;
+      margin-bottom: 7px;
     }
 
-    input, select {
+    input[type="text"] {
       width: 100%;
-      min-height: 47px;
-      padding: 11px 13px;
+      padding: 12px 13px;
       border: 1px solid #cbd5e1;
-      border-radius: 11px;
-      background: white;
-      color: var(--text);
+      border-radius: 9px;
+      font-size: 16px;
       outline: none;
     }
 
-    input:focus, select:focus {
+    input[type="text"]:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+      box-shadow: 0 0 0 3px #1769e01a;
     }
 
-    .hint {
-      font-size: 13px;
-      color: var(--muted);
-      margin: 12px 0 0;
+    .language-options {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    .toolbar {
+    .language-option {
       display: flex;
       align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 11px 14px;
+      cursor: pointer;
+    }
+
+    .language-option label {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 17px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .15s ease;
+    }
+
+    button:hover:not(:disabled) { transform: translateY(-1px); }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+    .btn-secondary { background: #e8eef7; color: #20324b; }
+    .btn-danger { background: #c62828; color: white; }
+    .btn-success { background: #16804a; color: white; }
+    .btn-outline { background: white; color: var(--primary); border: 1px solid var(--primary); }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .hidden { display: none !important; }
+
+    .muted { color: var(--muted); font-size: 14px; }
+
+    .progress-row {
+      display: flex;
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      border-radius: 999px;
-      padding: 7px 12px;
-      font-size: 13px;
-      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: var(--muted);
     }
 
     .progress-track {
       height: 9px;
-      width: 100%;
+      background: #e8edf5;
+      border-radius: 99px;
       overflow: hidden;
-      border-radius: 999px;
-      background: #e2e8f0;
-      margin: 10px 0 8px;
+      margin-bottom: 22px;
     }
 
     .progress-fill {
       height: 100%;
+      background: var(--primary);
       width: 0%;
-      background: linear-gradient(90deg, #2563eb, #60a5fa);
-      border-radius: inherit;
-      transition: width 0.25s ease;
-    }
-
-    .progress-caption {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .passage-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .passage-heading h2 {
-      margin: 0;
-      font-size: 21px;
+      transition: width .2s;
     }
 
     .passage {
-      background: #f8fafc;
+      background: #f8faff;
       border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: clamp(18px, 4vw, 27px);
-      min-height: 190px;
-      margin-bottom: 18px;
-    }
-
-    .passage p {
-      margin: 0;
+      border-radius: 12px;
+      padding: 22px;
       font-size: 19px;
       line-height: 2;
       overflow-wrap: anywhere;
+      white-space: pre-wrap;
     }
 
     .passage.urdu {
       direction: rtl;
       text-align: right;
-      font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic",
-                   "Jameel Noori Nastaleeq", serif;
+      font-size: 23px;
+      line-height: 2.1;
+      font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic", serif;
     }
 
-    .passage.urdu p {
-      font-size: 22px;
-      line-height: 2.25;
-    }
-
-    .recording-panel {
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 18px;
-      margin-bottom: 18px;
-    }
-
-    .timer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 13px;
-    }
-
-    .timer-label {
-      font-size: 14px;
-      color: var(--muted);
+    .timer-box {
+      text-align: center;
+      background: #eef5ff;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 16px;
     }
 
     .timer {
-      font-size: 27px;
+      font-size: 35px;
       font-weight: 800;
-      font-variant-numeric: tabular-nums;
       color: var(--primary);
+      font-variant-numeric: tabular-nums;
     }
 
-    .timer.danger {
-      color: var(--danger);
-    }
+    .timer.recording { color: var(--danger); }
 
     .recording-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
       color: var(--danger);
+      font-size: 14px;
       font-weight: 700;
-      font-size: 13px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      background: var(--danger);
-      border-radius: 50%;
-    }
-
-    .recording-indicator.active .dot {
-      animation: pulse 1s infinite;
-    }
-
-    @keyframes pulse {
-      50% { opacity: 0.25; transform: scale(0.8); }
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 45px;
-      padding: 11px 17px;
-      border: 1px solid transparent;
-      border-radius: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.15s, transform 0.15s;
-    }
-
-    .btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-    }
-
-    .btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: var(--primary-dark);
-    }
-
-    .btn-danger {
-      background: #fee2e2;
-      color: #b91c1c;
-      border-color: #fecaca;
-    }
-
-    .btn-light {
-      background: white;
-      color: var(--text);
-      border-color: var(--border);
-    }
-
-    .btn-success {
-      background: #dcfce7;
-      color: #166534;
-      border-color: #bbf7d0;
+      min-height: 22px;
     }
 
     .status {
-      font-size: 14px;
-      color: var(--muted);
-      margin: 12px 0 0;
-      min-height: 22px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      margin-top: 14px;
       overflow-wrap: anywhere;
+      font-size: 14px;
     }
 
-    .status.error {
-      color: var(--danger);
+    .status.info { background: #edf4ff; color: #174b91; }
+    .status.success { background: #eaf8ef; color: #17643b; }
+    .status.error { background: #fff0f0; color: #a32020; }
+
+    .recording-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
     }
 
-    .status.success {
-      color: var(--success);
+    .recording-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
     }
 
-    audio {
-      display: block;
-      width: 100%;
-      margin: 14px 0;
-    }
+    .recording-item strong { display: block; margin-bottom: 4px; }
+    .recording-item.done { border-color: #a9dfbd; background: #f4fcf6; }
 
-    .navigation {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .recording-item audio { width: 100%; margin-top: 9px; }
 
-    .navigation .btn {
-      min-width: 125px;
-    }
-
-    .small-note {
-      background: #eff6ff;
-      color: #1e40af;
-      border: 1px solid #bfdbfe;
-      padding: 13px 15px;
-      border-radius: 12px;
+    .footer-note {
       font-size: 13px;
-      margin-top: 18px;
-    }
-
-    .footer {
-      text-align: center;
       color: var(--muted);
-      font-size: 12px;
-      padding: 0 12px 25px;
+      text-align: center;
+      margin-top: 20px;
     }
 
     @media (max-width: 600px) {
-      .hero {
-        padding: 28px 16px 50px;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
-
-      .passage p {
-        font-size: 17px;
-      }
-
-      .passage.urdu p {
-        font-size: 20px;
-      }
-
-      .button-row .btn {
-        flex: 1 1 100%;
-      }
-
-      .navigation .btn {
-        min-width: 0;
-        flex: 1;
-      }
-
-      .card {
-        padding: 17px;
-      }
+      .card { padding: 17px; }
+      .passage { padding: 16px; font-size: 17px; }
+      .passage.urdu { font-size: 21px; }
+      .button-row button { flex: 1 1 140px; }
     }
   </style>
 </head>
 
 <body>
-  <header class="hero">
-    <div class="hero-icon" aria-hidden="true">🎙️</div>
-    <h1>Voice Recording Portal</h1>
-    <p>Urdu &amp; Roman Urdu Reading Assignment</p>
+  <header class="topbar">
+    <h1>Voice Recording Assignment</h1>
+    <p>Read each paragraph clearly and record your voice</p>
   </header>
 
   <main class="container">
     <section class="card" id="participantCard">
-      <h2 class="section-title">
-        <span class="section-number">1</span>
-        Participant Information
-      </h2>
+      <h2>Participant Information</h2>
 
-      <div class="form-grid">
+      <form id="participantForm">
         <div class="field">
-          <label for="participantName">Participant Name</label>
+          <label for="participantName">Full Name</label>
           <input id="participantName" type="text"
-                 placeholder="Enter your full name"
-                 autocomplete="name" required>
+                 placeholder="Enter your full name" required maxlength="100">
         </div>
 
         <div class="field">
           <label for="participantId">Participant ID</label>
           <input id="participantId" type="text"
-                 placeholder="Enter your assigned ID" required>
+                 placeholder="Enter your assigned ID" required maxlength="50">
         </div>
 
         <div class="field">
-          <label for="language">Select Reading Language</label>
-          <select id="language">
-            <option value="urdu">Urdu</option>
-            <option value="roman">Roman Urdu</option>
-          </select>
+          <label>Select Reading Language</label>
+          <div class="language-options">
+            <div class="language-option">
+              <input type="radio" name="language" id="langUrdu" value="urdu" required>
+              <label for="langUrdu">اردو</label>
+            </div>
+            <div class="language-option">
+              <input type="radio" name="language" id="langRoman" value="roman">
+              <label for="langRoman">Roman Urdu</label>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <p class="hint">
-        Enter your name and ID, select one language, and then start the assignment.
-      </p>
+        <p class="muted">
+          Please use the same language for all 20 paragraphs.
+          Each recording stops automatically after 45 seconds.
+        </p>
 
-      <div style="margin-top:18px">
-        <button class="btn btn-primary" id="beginBtn">
-          Start Assignment →
-        </button>
-      </div>
-      <p class="status" id="setupStatus" role="status"></p>
+        <button class="btn-primary" type="submit">Start Assignment</button>
+      </form>
     </section>
 
     <section class="card hidden" id="assignmentCard">
-      <div class="toolbar">
-        <span class="pill">📚 Reading Assignment</span>
-        <span class="pill" id="participantBadge">Participant</span>
+      <h2 id="welcomeHeading">Your Assignment</h2>
+      <p class="muted" id="participantSummary"></p>
+
+      <div class="progress-row">
+        <span id="paragraphCounter">Paragraph 1 of 20</span>
+        <span id="completedCounter">0 of 20 recorded</span>
       </div>
 
-      <h2 class="section-title">
-        <span class="section-number">2</span>
-        Your Progress
-      </h2>
-
-      <div class="progress-caption">
-        <span id="progressText">0 of 20 completed</span>
-        <span id="progressPercent">0%</span>
-      </div>
-      <div class="progress-track" aria-label="Recording progress">
+      <div class="progress-track">
         <div class="progress-fill" id="progressFill"></div>
       </div>
 
-      <div style="margin-top:27px" class="passage-heading">
-        <h2 id="paragraphTitle">Paragraph 1 of 20</h2>
-        <span class="pill" id="languageBadge">Urdu</span>
+      <div class="passage" id="passageText"></div>
+
+      <div class="timer-box">
+        <div class="muted">Recording time remaining</div>
+        <div class="timer" id="timer">00:45</div>
+        <div class="recording-indicator" id="recordingIndicator"></div>
       </div>
 
-      <div class="passage urdu" id="passageBox">
-        <p id="passageText"></p>
-      </div>
-
-      <div class="recording-panel">
-        <div class="timer-row">
-          <div>
-            <div class="timer-label">Time remaining</div>
-            <div class="timer" id="timer">00:45</div>
-          </div>
-
-          <span class="recording-indicator" id="recordingIndicator">
-            <span class="dot"></span>
-            <span id="recordingLabel">Ready to record</span>
-          </span>
-        </div>
-
-        <div class="button-row">
-          <button class="btn btn-primary" id="recordBtn">
-            🎙️ Start Recording
-          </button>
-          <button class="btn btn-danger" id="stopBtn" disabled>
-            ■ Stop Recording
-          </button>
-        </div>
-
-        <p class="status" id="recordStatus" role="status" aria-live="polite">
-          Each paragraph can be recorded for up to 45 seconds.
-        </p>
-
-        <div id="playbackArea" class="hidden">
-          <audio id="audioPlayer" controls></audio>
-          <div class="button-row">
-            <button class="btn btn-light" id="downloadBtn">
-              ⬇ Download Audio
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="navigation">
-        <button class="btn btn-light" id="prevBtn">← Previous</button>
-        <span class="pill" id="pageCounter">1 / 20</span>
-        <button class="btn btn-primary" id="nextBtn">Next →</button>
-      </div>
-
-      <div class="small-note">
-        <strong>Important:</strong> Record in a quiet place and read the
-        displayed paragraph clearly. Recording automatically stops after
-        45 seconds. Download your audio files before closing or refreshing
-        the page.
-      </div>
-
-      <hr style="border:0;border-top:1px solid var(--border);margin:25px 0">
-
-      <h2 class="section-title">
-        <span class="section-number">3</span>
-        Export Your Recordings
-      </h2>
-
-      <p class="hint">
-        Download each audio file separately, or export a JSON file containing
-        the assignment information and available recordings.
-      </p>
-
-      <div class="button-row" style="margin-top:15px">
-        <button class="btn btn-success" id="exportBtn">
-          ⬇ Export Recording Data (JSON)
+      <div class="button-row">
+        <button class="btn-primary" id="recordBtn" type="button">
+          ● Start Recording
+        </button>
+        <button class="btn-danger hidden" id="stopBtn" type="button">
+          ■ Stop Recording
+        </button>
+        <button class="btn-secondary" id="playBtn" type="button" disabled>
+          ▶ Play Recording
+        </button>
+        <button class="btn-outline" id="downloadCurrentBtn" type="button" disabled>
+          Download Audio
         </button>
       </div>
 
-      <p class="status" id="exportStatus" role="status"></p>
+      <div class="button-row">
+        <button class="btn-secondary" id="previousBtn" type="button">
+          ← Previous
+        </button>
+        <button class="btn-primary" id="nextBtn" type="button">
+          Next Paragraph →
+        </button>
+      </div>
+
+      <div id="recordingStatus" class="status info" role="status" aria-live="polite">
+        Select Start Recording when you are ready.
+      </div>
     </section>
+
+    <section class="card hidden" id="submissionCard">
+      <h2>Review and Submit</h2>
+      <p>
+        Review your recordings below. You can submit completed recordings
+        to the assignment Google Drive folder.
+      </p>
+
+      <div id="recordingList" class="recording-list"></div>
+
+      <div class="button-row">
+        <button class="btn-success" id="uploadBtn" type="button">
+          ☁ Submit All Recordings
+        </button>
+        <button class="btn-secondary" id="exportBtn" type="button">
+          Download JSON
+        </button>
+      </div>
+
+      <div id="exportStatus" class="status info" role="status" aria-live="polite">
+        Your recordings are currently stored in this browser session.
+      </div>
+
+      <p class="muted">
+        Keep this page open until you have checked that your recordings
+        appear in Google Drive. Do not submit repeatedly without checking
+        whether the earlier upload succeeded.
+      </p>
+    </section>
+
+    <p class="footer-note">
+      Please allow microphone access when your browser asks for permission.
+    </p>
   </main>
 
-  <footer class="footer">
-    Voice Recording Assignment · 20 Paragraphs · Maximum 45 Seconds Per Recording
-  </footer>
-
   <script>
+    "use strict";
+
     const TOTAL = 20;
     const MAX_SECONDS = 45;
 
-    // Matching Urdu and Roman Urdu passages.
+    const BACKEND_URL =
+      "https://script.google.com/macros/s/AKfycbx4lHTlsTGP-IEWQvazstLQszdcBbgvxlYfkf2D7_miXTd6CfjeB72U8b-hewMTCMs-Kg/exec";
+
     const paragraphs = [
       {
-        urdu: "تعلیم انسان کی زندگی میں اہم کردار ادا کرتی ہے۔ یہ ہمیں نئی چیزیں سیکھنے، بہتر فیصلے کرنے اور اپنے مستقبل کو روشن بنانے میں مدد دیتی ہے۔ ایک تعلیم یافتہ انسان نہ صرف اپنی زندگی بہتر بناتا ہے بلکہ معاشرے کی ترقی میں بھی مثبت کردار ادا کرتا ہے۔",
-        roman: "Taleem insaan ki zindagi mein aham kirdar ada karti hai. Yeh humein nayi cheezen seekhne, behtar faislay karne aur apne mustaqbil ko roshan banane mein madad deti hai. Aik taleem yafta insaan na sirf apni zindagi behtar banata hai balkay muashray ki taraqqi mein bhi musbat kirdar ada karta hai."
+        urdu: "تعلیم انسان کی زندگی میں بہت اہم کردار ادا کرتی ہے۔ یہ ہمیں علم حاصل کرنے، اچھے فیصلے کرنے اور معاشرے میں ذمہ دار شہری بننے کا موقع فراہم کرتی ہے۔ ایک تعلیم یافتہ انسان اپنے مسائل کو بہتر انداز میں سمجھ سکتا ہے اور دوسروں کی مدد بھی کر سکتا ہے۔ ہمیں چاہیے کہ ہم روزانہ کچھ نیا سیکھیں، کتابیں پڑھیں اور اپنے علم کو عملی زندگی میں استعمال کریں۔",
+        roman: "Taleem insaan ki zindagi mein bohat aham kirdar ada karti hai. Yeh humein ilm hasil karne, achay faislay karne aur muashray mein zimmedar shehri banne ka mauqa faraham karti hai. Aik taleem yafta insaan apne masail ko behtar andaaz mein samajh sakta hai aur doosron ki madad bhi kar sakta hai. Humein chahiye ke hum rozana kuch naya seekhein, kitabein parhein aur apne ilm ko amli zindagi mein istemal karein."
       },
       {
-        urdu: "وقت ایک قیمتی دولت ہے جسے واپس نہیں لایا جا سکتا۔ جو لوگ اپنے وقت کی قدر کرتے ہیں وہ اپنے مقاصد حاصل کرنے کے زیادہ مواقع پیدا کرتے ہیں۔ روزانہ کے کاموں کی منصوبہ بندی کرنے سے انسان غیر ضروری پریشانی سے بچ سکتا ہے اور اپنی ذمہ داریاں بہتر انداز میں پوری کر سکتا ہے۔",
-        roman: "Waqt aik qeemti daulat hai jise wapas nahi laya ja sakta. Jo log apne waqt ki qadar karte hain woh apne maqsad hasil karne ke zyada mauqay paida karte hain. Rozana ke kaamon ki mansooba bandi se insaan ghair zaroori pareshani se bach sakta hai aur apni zimmedariyan behtar andaaz mein poori kar sakta hai."
+        urdu: "وقت ایک قیمتی سرمایہ ہے جسے دوبارہ حاصل نہیں کیا جا سکتا۔ جو لوگ اپنے وقت کی منصوبہ بندی کرتے ہیں وہ اپنے کام بہتر طریقے سے مکمل کر لیتے ہیں۔ ہمیں غیر ضروری مصروفیات سے بچنا چاہیے اور ہر کام کے لیے مناسب وقت مقرر کرنا چاہیے۔ وقت کی پابندی انسان میں نظم و ضبط پیدا کرتی ہے اور اسے اپنے مقاصد حاصل کرنے میں مدد دیتی ہے۔",
+        roman: "Waqt aik qeemti sarmaya hai jise dobara hasil nahi kiya ja sakta. Jo log apne waqt ki mansuba bandi karte hain woh apne kaam behtar tareeqay se mukammal kar lete hain. Humein ghair zaroori masroofiyat se bachna chahiye aur har kaam ke liye munasib waqt muqarrar karna chahiye. Waqt ki pabandi insaan mein nazm o zabt paida karti hai aur use apne maqasid hasil karne mein madad deti hai."
       },
       {
-        urdu: "کتابیں انسان کی بہترین دوست سمجھی جاتی ہیں کیونکہ یہ علم، تجربہ اور سوچنے کا نیا انداز فراہم کرتی ہیں۔ مطالعہ کرنے سے زبان بہتر ہوتی ہے اور الفاظ کا ذخیرہ بڑھتا ہے۔ روزانہ چند صفحات پڑھنے کی عادت انسان کو زیادہ باخبر، سمجھ دار اور پراعتماد بنانے میں مدد دیتی ہے۔",
-        roman: "Kitabein insaan ki behtareen dost samjhi jati hain kyun ke yeh ilm, tajurba aur sochne ka naya andaaz faraham karti hain. Mutalea karne se zaban behtar hoti hai aur alfaaz ka zakheera barhta hai. Rozana chand safhat parhne ki aadat insaan ko zyada ba-khabar, samajhdar aur pur-aitemad banati hai."
+        urdu: "کتابیں ہماری بہترین دوست سمجھی جاتی ہیں کیونکہ ان سے ہمیں مختلف موضوعات کے بارے میں معلومات حاصل ہوتی ہیں۔ مطالعہ کرنے سے زبان بہتر ہوتی ہے، سوچنے کی صلاحیت بڑھتی ہے اور نئے خیالات پیدا ہوتے ہیں۔ اچھی کتاب انسان کو اپنی غلطیوں سے سیکھنے اور زندگی کے مسائل کا حل تلاش کرنے میں مدد دیتی ہے۔ ہمیں روزانہ مطالعے کے لیے کچھ وقت ضرور نکالنا چاہیے۔",
+        roman: "Kitabein hamari behtareen dost samjhi jati hain kyun ke in se humein mukhtalif mozuaat ke baray mein maloomat hasil hoti hain. Mutalia karne se zaban behtar hoti hai, sochnay ki salahiyat barhti hai aur naye khayalat paida hotay hain. Achi kitab insaan ko apni ghaltiyon se seekhnay aur zindagi ke masail ka hal talash karne mein madad deti hai. Humein rozana mutalia ke liye kuch waqt zaroor nikalna chahiye."
       },
       {
-        urdu: "صحت مند زندگی گزارنے کے لیے متوازن غذا، مناسب نیند اور روزانہ جسمانی سرگرمی ضروری ہے۔ انسان کو اپنی صحت کا خیال رکھنا چاہیے اور ایسی عادات اپنانی چاہییں جو جسم اور ذہن دونوں کے لیے فائدہ مند ہوں۔ چھوٹی چھوٹی مثبت تبدیلیاں وقت کے ساتھ بڑے نتائج پیدا کر سکتی ہیں۔",
-        roman: "Sehat mand zindagi guzarne ke liye mutawazan ghiza, munasib neend aur rozana jismani sargarmi zaroori hai. Insaan ko apni sehat ka khayal rakhna chahiye aur aisi aadatein apnani chahiye jo jism aur zehan dono ke liye faida mand hon. Chhoti chhoti musbat tabdeeliyan waqt ke sath baray nataij paida kar sakti hain."
+        urdu: "صحت مند زندگی گزارنے کے لیے متوازن غذا، مناسب نیند اور باقاعدہ ورزش ضروری ہیں۔ اگر ہم اپنی صحت کا خیال رکھیں تو روزمرہ کے کام زیادہ توانائی کے ساتھ انجام دے سکتے ہیں۔ صاف پانی پینا، تازہ پھل کھانا اور غیر ضروری ذہنی دباؤ سے بچنا بھی فائدہ مند ہے۔ اچھی صحت انسان کو خوش رہنے اور اپنے مقاصد پر توجہ دینے میں مدد دیتی ہے۔",
+        roman: "Sehat mand zindagi guzarne ke liye mutawazan ghiza, munasib neend aur baqaida warzish zaroori hain. Agar hum apni sehat ka khayal rakhein to rozmarrah ke kaam zyada tawanai ke sath anjaam de sakte hain. Saaf pani peena, taza phal khana aur ghair zaroori zehni dabao se bachna bhi faida mand hai. Achi sehat insaan ko khush rehne aur apne maqasid par tawajju dene mein madad deti hai."
       },
       {
-        urdu: "والدین ہماری زندگی میں اہم مقام رکھتے ہیں۔ وہ ہماری پرورش کرتے ہیں، ہماری ضروریات پوری کرنے کی کوشش کرتے ہیں اور مشکل وقت میں ہماری رہنمائی کرتے ہیں۔ ہمیں چاہیے کہ ان کی عزت کریں، ان کی بات غور سے سنیں اور اپنی کامیابیوں میں ان کی قربانیوں کو ہمیشہ یاد رکھیں۔",
-        roman: "Walidain hamari zindagi mein aham maqam rakhte hain. Woh hamari parwarish karte hain, hamari zarooriyat poori karne ki koshish karte hain aur mushkil waqt mein hamari rehnumai karte hain. Humein chahiye ke unki izzat karein, unki baat ghour se sunein aur apni kamyabiyon mein unki qurbaniyon ko hamesha yaad rakhein."
+        urdu: "درخت ماحول کو صاف رکھنے اور ہوا میں آکسیجن کی مقدار بڑھانے میں اہم کردار ادا کرتے ہیں۔ یہ ہمیں سایہ، پھل اور لکڑی فراہم کرتے ہیں جبکہ بہت سے جانوروں اور پرندوں کا گھر بھی ہوتے ہیں۔ درختوں کی کٹائی سے ماحول کا توازن متاثر ہوتا ہے۔ ہمیں زیادہ سے زیادہ پودے لگانے چاہییں اور ان کی مناسب دیکھ بھال کرنی چاہیے تاکہ آنے والی نسلوں کو بھی صاف ماحول مل سکے۔",
+        roman: "Darakht mahol ko saaf rakhne aur hawa mein oxygen ki miqdar barhanay mein aham kirdar ada karte hain. Yeh humein saya, phal aur lakri faraham karte hain jabke bohat se janwaron aur parindon ka ghar bhi hotay hain. Darakhton ki katai se mahol ka tawazun mutasir hota hai. Humein zyada se zyada poday laganay chahiye aur un ki munasib dekh bhal karni chahiye taake anay wali nasaloon ko bhi saaf mahol mil sakay."
       },
       {
-        urdu: "دوستی اعتماد، احترام اور خلوص سے مضبوط ہوتی ہے۔ ایک اچھا دوست خوشی کے موقع پر ساتھ دیتا ہے اور مشکل حالات میں حوصلہ بڑھاتا ہے۔ ہمیں دوستوں کے ساتھ سچ بولنا چاہیے، ان کے جذبات کا احترام کرنا چاہیے اور اختلاف کی صورت میں تحمل سے بات کرنی چاہیے۔",
-        roman: "Dosti aitmaad, ehtram aur khuloos se mazboot hoti hai. Aik acha dost khushi ke mauqay par sath deta hai aur mushkil halaat mein hosla barhata hai. Humein doston ke sath sach bolna chahiye, unke jazbaat ka ehtram karna chahiye aur ikhtilaf ki surat mein tahammul se baat karni chahiye."
+        urdu: "ٹیکنالوجی نے ہماری روزمرہ زندگی میں بہت سی آسانیاں پیدا کر دی ہیں۔ موبائل فون اور انٹرنیٹ کے ذریعے ہم دنیا بھر کی معلومات حاصل کر سکتے ہیں اور دور رہنے والے لوگوں سے رابطہ رکھ سکتے ہیں۔ تاہم ٹیکنالوجی کا غیر ضروری استعمال وقت ضائع کر سکتا ہے۔ ہمیں اسے تعلیم، تحقیق اور مفید کاموں کے لیے استعمال کرنا چاہیے اور اپنی ذاتی زندگی کے لیے بھی وقت نکالنا چاہیے۔",
+        roman: "Technology ne hamari rozmarrah zindagi mein bohat si asaniyan paida kar di hain. Mobile phone aur internet ke zariye hum duniya bhar ki maloomat hasil kar sakte hain aur door rehne walay logon se rabta rakh sakte hain. Taham technology ka ghair zaroori istemal waqt zaya kar sakta hai. Humein ise taleem, tehqeeq aur mufeed kaamon ke liye istemal karna chahiye aur apni zaati zindagi ke liye bhi waqt nikalna chahiye."
       },
       {
-        urdu: "انٹرنیٹ نے دنیا بھر میں معلومات حاصل کرنے اور لوگوں سے رابطہ کرنے کے طریقوں کو بدل دیا ہے۔ طلبہ آن لائن مواد سے سیکھ سکتے ہیں اور اپنی مہارتوں کو بہتر بنا سکتے ہیں۔ تاہم انٹرنیٹ استعمال کرتے وقت ذاتی معلومات کی حفاظت، درست معلومات کی جانچ اور وقت کا مناسب استعمال بھی ضروری ہے۔",
-        roman: "Internet ne duniya bhar mein maloomat hasil karne aur logon se rabta karne ke tareeqon ko badal diya hai. Talaba online mawad se seekh sakte hain aur apni mahارتیں behtar bana sakte hain. Taham internet istemal karte waqt zaati maloomat ki hifazat, durust maloomat ki jaanch aur waqt ka munasib istemal bhi zaroori hai."
+        urdu: "کامیابی حاصل کرنے کے لیے محنت، مستقل مزاجی اور صبر کی ضرورت ہوتی ہے۔ ہر شخص کو اپنی زندگی میں مشکلات کا سامنا کرنا پڑتا ہے، لیکن ہمت نہ ہارنے والے لوگ اکثر بہتر نتائج حاصل کرتے ہیں۔ ہمیں اپنی غلطیوں کو ناکامی سمجھنے کے بجائے ان سے سبق سیکھنا چاہیے۔ واضح مقصد مقرر کرکے اور روزانہ چھوٹے قدم اٹھا کر ہم اپنی منزل کے قریب پہنچ سکتے ہیں۔",
+        roman: "Kamyabi hasil karne ke liye mehnat, mustaqil mizaji aur sabr ki zaroorat hoti hai. Har shakhs ko apni zindagi mein mushkilat ka samna karna parta hai, lekin himmat na harne walay log aksar behtar nataij hasil karte hain. Humein apni ghaltiyon ko nakami samajhne ke bajaye un se sabaq seekhna chahiye. Wazeh maqsad muqarrar karke aur rozana chhotay qadam utha kar hum apni manzil ke qareeb pohanch sakte hain."
       },
       {
-        urdu: "کامیابی حاصل کرنے کے لیے مستقل مزاجی اور محنت کی ضرورت ہوتی ہے۔ ہر انسان کو اپنی زندگی میں مشکلات کا سامنا کرنا پڑتا ہے، لیکن ناکامی سے سیکھنے والا شخص آگے بڑھنے کے نئے راستے تلاش کر لیتا ہے۔ واضح مقصد، مثبت سوچ اور مسلسل کوشش انسان کو اپنی منزل کے قریب لے جاتی ہے۔",
-        roman: "Kamyabi hasil karne ke liye mustaqil mizaji aur mehnat ki zaroorat hoti hai. Har insaan ko apni zindagi mein mushkilat ka samna karna parta hai, lekin nakami se seekhne wala shakhs aage barhne ke naye raste talash kar leta hai. Wazeh maqsad, musbat soch aur musalsal koshish insaan ko apni manzil ke qareeb le jati hai."
+        urdu: "والدین ہماری زندگی میں محبت، رہنمائی اور تحفظ کا اہم ذریعہ ہوتے ہیں۔ وہ ہماری بہتر تربیت کے لیے اپنی ضروریات کو بھی پیچھے رکھ دیتے ہیں۔ ہمیں ان کی عزت کرنی چاہیے، ان کی بات توجہ سے سننی چاہیے اور مشکل وقت میں ان کا ساتھ دینا چاہیے۔ خاندان کے افراد ایک دوسرے کا احترام کریں تو گھر کا ماحول خوش گوار رہتا ہے اور مسائل مل جل کر حل کیے جا سکتے ہیں۔",
+        roman: "Walidain hamari zindagi mein mohabbat, rehnumai aur tahaffuz ka aham zariya hotay hain. Woh hamari behtar tarbiyat ke liye apni zarooriyat ko bhi peechay rakh dete hain. Humein un ki izzat karni chahiye, un ki baat tawajju se sunni chahiye aur mushkil waqt mein un ka sath dena chahiye. Khandan ke afrad aik doosray ka ehtram karein to ghar ka mahol khushgawar rehta hai aur masail mil jul kar hal kiye ja sakte hain."
       },
       {
-        urdu: "ماحول کی حفاظت ہر شہری کی ذمہ داری ہے۔ درخت لگانا، پانی ضائع نہ کرنا اور اپنے اردگرد صفائی رکھنا ایسے آسان اقدامات ہیں جو قدرتی ماحول کو بہتر بنا سکتے ہیں۔ اگر ہر شخص اپنی روزمرہ زندگی میں ماحول دوست عادات اپنائے تو آنے والی نسلوں کے لیے ایک صاف اور صحت مند دنیا چھوڑی جا سکتی ہے۔",
-        roman: "Mahol ki hifazat har shehri ki zimmedari hai. Darakht lagana, pani zaya na karna aur apne ird gird safai rakhna aise asaan iqdamat hain jo qudrati mahol ko behtar bana sakte hain. Agar har shakhs apni rozmarrah zindagi mein mahol dost aadatein apnaye to aanay wali nasaloon ke liye aik saaf aur sehat mand duniya chhori ja sakti hai."
+        urdu: "صفائی اچھی صحت اور بہتر معاشرے کی بنیاد ہے۔ ہمیں اپنے گھر، گلی، اسکول اور کام کی جگہ کو صاف رکھنا چاہیے۔ کچرا مناسب جگہ پر ڈالنے اور پانی کو آلودگی سے بچانے سے کئی بیماریوں کو روکا جا سکتا ہے۔ صفائی صرف حکومت کی ذمہ داری نہیں بلکہ ہر شہری کا فرض ہے۔ اگر ہر شخص اپنی ذمہ داری پوری کرے تو ہمارا ماحول زیادہ خوب صورت اور صحت مند بن سکتا ہے۔",
+        roman: "Safai achi sehat aur behtar muashray ki bunyad hai. Humein apne ghar, gali, school aur kaam ki jagah ko saaf rakhna chahiye. Kachra munasib jagah par dalne aur pani ko aloodgi se bachanay se kai bimariyon ko roka ja sakta hai. Safai sirf hukoomat ki zimmedari nahi balkay har shehri ka farz hai. Agar har shakhs apni zimmedari poori kare to hamara mahol zyada khoobsurat aur sehat mand ban sakta hai."
       },
       {
-        urdu: "ٹیکنالوجی نے تعلیم، کاروبار اور روزمرہ زندگی میں بہت سی آسانیاں پیدا کی ہیں۔ موبائل فون اور کمپیوٹر کے ذریعے لوگ تیزی سے معلومات حاصل کرتے اور ایک دوسرے سے رابطہ کرتے ہیں۔ ہمیں ٹیکنالوجی کو ذمہ داری کے ساتھ استعمال کرنا چاہیے تاکہ اس کے فوائد حاصل ہوں اور اس کے ممکنہ نقصانات سے بچا جا سکے۔",
-        roman: "Technology ne taleem, karobar aur rozmarrah zindagi mein bohat si aasaniyan paida ki hain. Mobile phone aur computer ke zariye log tezi se maloomat hasil karte aur aik doosray se rabta karte hain. Humein technology ko zimmedari ke sath istemal karna chahiye taake is ke fawaid hasil hon aur mumkinah nuqsanat se bacha ja sake."
+        urdu: "دوستی انسانی زندگی کا ایک خوب صورت حصہ ہے۔ ایک اچھا دوست خوشی اور مشکل دونوں وقتوں میں ساتھ دیتا ہے اور ہمیں صحیح راستہ اختیار کرنے کی ترغیب دیتا ہے۔ سچی دوستی اعتماد، احترام اور خلوص پر قائم ہوتی ہے۔ ہمیں دوستوں کے ساتھ وعدے پورے کرنے چاہییں اور ان کے جذبات کا خیال رکھنا چاہیے۔ اچھے دوست ہماری شخصیت کو بہتر بنانے اور مثبت سوچ اپنانے میں مدد کرتے ہیں۔",
+        roman: "Dosti insani zindagi ka aik khoobsurat hissa hai. Aik acha dost khushi aur mushkil dono waqt mein sath deta hai aur humein sahi rasta ikhtiyar karne ki targheeb deta hai. Sachi dosti aitmad, ehtram aur khuloos par qaim hoti hai. Humein doston ke sath waday poore karne chahiye aur un ke jazbaat ka khayal rakhna chahiye. Achay dost hamari shakhsiyat ko behtar bananay aur musbat soch apnanay mein madad karte hain."
       },
       {
-        urdu: "کسی بھی معاشرے کی ترقی میں نوجوانوں کا کردار بہت اہم ہوتا ہے۔ نوجوان اپنی تعلیم، تخلیقی سوچ اور محنت کے ذریعے نئے خیالات پیش کر سکتے ہیں۔ اگر انہیں مناسب مواقع، رہنمائی اور تربیت ملے تو وہ اپنے خاندان، معاشرے اور ملک کے لیے مفید ثابت ہو سکتے ہیں۔",
-        roman: "Kisi bhi muashray ki taraqqi mein naujawanon ka kirdar bohat aham hota hai. Naujawan apni taleem, takhleeqi soch aur mehnat ke zariye naye khayalat pesh kar sakte hain. Agar unhein munasib mauqay, rehnumai aur tarbiyat mile to woh apne khandan, muashray aur mulk ke liye mufeed sabit ho sakte hain."
+        urdu: "سفر کرنے سے انسان کو نئی جگہیں دیکھنے اور مختلف ثقافتوں کو سمجھنے کا موقع ملتا ہے۔ سفر کے دوران ہم نئے لوگوں سے ملتے ہیں اور ان کے رہن سہن کے بارے میں معلومات حاصل کرتے ہیں۔ بہتر سفر کے لیے پہلے سے منصوبہ بندی کرنا، ضروری سامان ساتھ رکھنا اور مقامی اصولوں کا احترام کرنا چاہیے۔ سفر ہماری معلومات میں اضافہ کرتا ہے اور روزمرہ کی مصروفیات سے ذہنی تازگی بھی فراہم کرتا ہے۔",
+        roman: "Safar karne se insaan ko nai jaghein dekhne aur mukhtalif saqafaton ko samajhne ka mauqa milta hai. Safar ke dauran hum naye logon se milte hain aur un ke rehan sehan ke baray mein maloomat hasil karte hain. Behtar safar ke liye pehle se mansuba bandi karna, zaroori saman sath rakhna aur maqami usoolon ka ehtram karna chahiye. Safar hamari maloomat mein izafa karta hai aur rozmarrah ki masroofiyat se zehni tazgi bhi faraham karta hai."
       },
       {
-        urdu: "سفر انسان کو مختلف علاقوں، ثقافتوں اور لوگوں کو سمجھنے کا موقع دیتا ہے۔ نئی جگہوں کو دیکھنے سے علم میں اضافہ ہوتا ہے اور سوچ کا دائرہ وسیع ہوتا ہے۔ سفر کے دوران مقامی روایات کا احترام کرنا، صفائی کا خیال رکھنا اور اپنے سامان کی حفاظت کرنا ایک ذمہ دار مسافر کی نشانیاں ہیں۔",
-        roman: "Safar insaan ko mukhtalif ilaqon, saqafaton aur logon ko samajhne ka mauqa deta hai. Nayi jagahon ko dekhne se ilm mein izafa hota hai aur soch ka daira wasee hota hai. Safar ke dauran maqami riwayat ka ehtram karna, safai ka khayal rakhna aur apne saman ki hifazat karna aik zimmedar musafir ki nishaniyan hain."
+        urdu: "پانی زندگی کے لیے بنیادی ضرورت ہے اور دنیا میں اس کے ذخائر محدود ہیں۔ ہمیں پانی کو احتیاط سے استعمال کرنا چاہیے اور نل کھلا نہیں چھوڑنا چاہیے۔ زراعت، صفائی اور روزمرہ کے بے شمار کام پانی کے بغیر ممکن نہیں۔ پانی کو آلودہ کرنا انسانوں، جانوروں اور پودوں کے لیے نقصان دہ ہے۔ اگر ہم آج پانی بچانے کی عادت اپنائیں تو مستقبل میں اس کی کمی کے مسائل کم ہو سکتے ہیں۔",
+        roman: "Pani zindagi ke liye bunyadi zaroorat hai aur duniya mein is ke zakhair mehdood hain. Humein pani ko ehtiyat se istemal karna chahiye aur nal khula nahi chhorna chahiye. Zaraat, safai aur rozmarrah ke beshumar kaam pani ke baghair mumkin nahi. Pani ko alooda karna insano, janwaron aur podon ke liye nuqsan deh hai. Agar hum aaj pani bachanay ki aadat apnayein to mustaqbil mein is ki kami ke masail kam ho sakte hain."
       },
       {
-        urdu: "مواصلات کی اچھی صلاحیت انسان کو اپنی بات واضح انداز میں بیان کرنے میں مدد دیتی ہے۔ دوسروں کی بات توجہ سے سننا، مناسب الفاظ کا انتخاب کرنا اور احترام سے جواب دینا مؤثر گفتگو کے بنیادی اصول ہیں۔ ان صلاحیتوں کی مشق سے تعلیمی، پیشہ ورانہ اور ذاتی تعلقات بہتر بنائے جا سکتے ہیں۔",
-        roman: "Muwasalat ki achhi salahiyat insaan ko apni baat wazeh andaaz mein bayan karne mein madad deti hai. Doosron ki baat tawajjo se sunna, munasib alfaaz ka intikhab karna aur ehtram se jawab dena moassar guftagu ke bunyadi usool hain. In salahiyaton ki mashq se taleemi, pesha warana aur zaati talluqat behtar banaye ja sakte hain."
+        urdu: "کھیل کود جسمانی صحت کے ساتھ ذہنی تازگی کے لیے بھی مفید ہیں۔ کھیل ہمیں ٹیم کے ساتھ کام کرنا، اصولوں کی پابندی کرنا اور جیت یا ہار کو برداشت کرنا سکھاتے ہیں۔ باقاعدہ جسمانی سرگرمی سے انسان زیادہ چست محسوس کرتا ہے۔ طلبہ کو تعلیم کے ساتھ کھیلوں کے لیے بھی وقت نکالنا چاہیے۔ متوازن معمول میں پڑھائی، آرام اور ورزش شامل ہوں تو روزمرہ کی کارکردگی بہتر ہو سکتی ہے۔",
+        roman: "Khel kood jismani sehat ke sath zehni tazgi ke liye bhi mufeed hain. Khel humein team ke sath kaam karna, usoolon ki pabandi karna aur jeet ya haar ko bardasht karna sikhate hain. Baqaida jismani sargarmi se insaan zyada chust mehsoos karta hai. Talaba ko taleem ke sath khelon ke liye bhi waqt nikalna chahiye. Mutawazan mamool mein parhai, aram aur warzish shamil hon to rozmarrah ki karkardagi behtar ho sakti hai."
       },
       {
-        urdu: "موسم میں تبدیلی ہماری روزمرہ زندگی پر اثر انداز ہوتی ہے۔ گرمی، سردی اور بارش کے مطابق اپنے معمولات میں تبدیلی کرنا ضروری ہو سکتا ہے۔ ہمیں موسم کی پیش گوئی سے باخبر رہنا چاہیے اور شدید موسم کے دوران اپنی صحت، سفر اور حفاظت کے لیے مناسب احتیاطی تدابیر اختیار کرنی چاہییں۔",
-        roman: "Mausam mein tabdeeli hamari rozmarrah zindagi par asar انداز hoti hai. Garmi, sardi aur barish ke mutabiq apne mamoolat mein tabdeeli karna zaroori ho sakta hai. Humein mausam ki peshgoi se ba-khabar rehna chahiye aur shadeed mausam ke dauran apni sehat, safar aur hifazat ke liye munasib ehtiyati tadabeer ikhtiyar karni chahiye."
+        urdu: "ذمہ داری کا احساس انسان کو قابل اعتماد بناتا ہے۔ جب ہم کوئی کام اپنے ذمے لیتے ہیں تو اسے وقت پر اور پوری توجہ سے مکمل کرنا چاہیے۔ اپنی غلطی تسلیم کرنا اور اسے درست کرنے کی کوشش کرنا بھی ذمہ داری کا حصہ ہے۔ گھر، تعلیمی ادارے اور کام کی جگہ پر ہر فرد کا کردار اہم ہوتا ہے۔ ذمہ دار لوگ دوسروں کا اعتماد حاصل کرتے ہیں اور اجتماعی ترقی میں اپنا حصہ ڈالتے ہیں۔",
+        roman: "Zimmedari ka ehsas insaan ko qabil e aitmad banata hai. Jab hum koi kaam apne zimme lete hain to use waqt par aur poori tawajju se mukammal karna chahiye. Apni ghalti tasleem karna aur use durust karne ki koshish karna bhi zimmedari ka hissa hai. Ghar, taleemi idaray aur kaam ki jagah par har fard ka kirdar aham hota hai. Zimmedar log doosron ka aitmad hasil karte hain aur ijtimai taraqqi mein apna hissa dalte hain."
       },
       {
-        urdu: "نئی مہارتیں سیکھنا انسان کی ذاتی اور پیشہ ورانہ ترقی کے لیے فائدہ مند ہے۔ زبان، کمپیوٹر، تحریر اور مسئلے حل کرنے جیسی صلاحیتیں مختلف شعبوں میں کام آتی ہیں۔ باقاعدہ مشق، صبر اور سیکھنے کا جذبہ کسی بھی نئی مہارت میں بہتری لانے کے اہم طریقے ہیں۔",
-        roman: "Nayi mahارتیں seekhna insaan ki zaati aur pesha warana taraqqi ke liye faida mand hai. Zaban, computer, tehreer aur maslay hal karne jaisi salahiyatein mukhtalif shobon mein kaam aati hain. Baqaida mashq, sabr aur seekhne ka jazba kisi bhi nayi salahiyat mein behtari lane ke aham tareeqay hain."
+        urdu: "اچھا رابطہ قائم کرنے کے لیے دوسروں کی بات غور سے سننا اور اپنے خیالات واضح انداز میں بیان کرنا ضروری ہے۔ گفتگو کے دوران احترام اور تحمل کا مظاہرہ کرنا غلط فہمیوں کو کم کرتا ہے۔ اختلاف رائے ہونے کے باوجود ہم ایک دوسرے کی بات سمجھنے کی کوشش کر سکتے ہیں۔ بہتر رابطہ خاندان، تعلیم اور پیشہ ورانہ زندگی میں تعاون کو بڑھاتا ہے اور مسائل کا حل تلاش کرنے میں مدد دیتا ہے۔",
+        roman: "Acha rabta qaim karne ke liye doosron ki baat ghor se sunna aur apne khayalat wazeh andaaz mein bayan karna zaroori hai. Guftagu ke dauran ehtram aur tahammul ka muzahira ghalat fehmiyon ko kam karta hai. Ikhtilaf e rai honay ke bawajood hum aik doosray ki baat samajhne ki koshish kar sakte hain. Behtar rabta khandan, taleem aur pesha warana zindagi mein taawun ko barhata hai aur masail ka hal talash karne mein madad deta hai."
       },
       {
-        urdu: "ٹیم ورک میں ہر فرد کی ذمہ داری اور تعاون اہم ہوتا ہے۔ جب لوگ ایک مشترکہ مقصد کے لیے مل کر کام کرتے ہیں تو مشکل کام بھی آسان ہو سکتے ہیں۔ دوسروں کی رائے سننا، اپنے حصے کا کام وقت پر مکمل کرنا اور ضرورت کے وقت مدد کرنا ایک کامیاب ٹیم کی اہم خصوصیات ہیں۔",
-        roman: "Teamwork mein har fard ki zimmedari aur taawun aham hota hai. Jab log aik mushtarka maqsad ke liye mil kar kaam karte hain to mushkil kaam bhi asaan ho sakte hain. Doosron ki raye sunna, apne hissay ka kaam waqt par mukammal karna aur zaroorat ke waqt madad karna aik kamyab team ki aham khasusiyat hain."
+        urdu: "انٹرنیٹ نے معلومات حاصل کرنا اور لوگوں سے رابطہ رکھنا پہلے سے زیادہ آسان بنا دیا ہے۔ طلبہ آن لائن تعلیمی مواد سے فائدہ اٹھا سکتے ہیں اور مختلف مہارتیں سیکھ سکتے ہیں۔ تاہم ہر آن لائن معلومات درست نہیں ہوتی، اس لیے ذرائع کی تصدیق کرنا ضروری ہے۔ اپنی ذاتی معلومات کو محفوظ رکھنا اور نامعلوم روابط پر احتیاط سے کلک کرنا بھی اہم ہے۔ ذمہ دارانہ استعمال سے انٹرنیٹ بہت مفید ثابت ہو سکتا ہے۔",
+        roman: "Internet ne maloomat hasil karna aur logon se rabta rakhna pehle se zyada asan bana diya hai. Talaba online taleemi mawad se faida utha sakte hain aur mukhtalif maharatein seekh sakte hain. Taham har online maloomat durust nahi hoti, is liye zaraye ki tasdeeq karna zaroori hai. Apni zaati maloomat ko mehfooz rakhna aur namaloom rabton par ehtiyat se click karna bhi aham hai. Zimmedarana istemal se internet bohat mufeed sabit ho sakta hai."
       },
       {
-        urdu: "مالی منصوبہ بندی انسان کو اپنی آمدنی اور اخراجات بہتر طریقے سے سنبھالنے میں مدد دیتی ہے۔ ضروریات اور خواہشات میں فرق سمجھنا، کچھ رقم بچانا اور غیر ضروری خریداری سے گریز کرنا مفید عادات ہیں۔ مناسب منصوبہ بندی سے مستقبل کے اہداف حاصل کرنا اور اچانک آنے والے اخراجات کا سامنا کرنا آسان ہو سکتا ہے۔",
-        roman: "Maali mansooba bandi insaan ko apni aamdani aur akhrajaat behtar tareeqay se sambhalne mein madad deti hai. Zarooriyat aur khwahishat mein farq samajhna, kuch raqam bachana aur ghair zaroori khareedari se gurez karna mufeed aadatein hain. Munasib mansooba bandi se mustaqbil ke hadaf hasil karna aur achanak aane wale akhrajaat ka samna karna asaan ho sakta hai."
+        urdu: "اعتماد انسان کو نئے کام شروع کرنے اور مشکلات کا سامنا کرنے کی ہمت دیتا ہے۔ خود اعتمادی کا مطلب یہ نہیں کہ انسان کبھی غلطی نہیں کرتا، بلکہ اس کا مطلب ہے کہ وہ سیکھنے اور بہتر ہونے کی کوشش جاری رکھتا ہے۔ اپنی صلاحیتوں کو پہچاننا، تیاری کرنا اور مثبت سوچ رکھنا اعتماد بڑھانے میں مدد دیتا ہے۔ دوسروں سے اپنا موازنہ کرنے کے بجائے اپنی ترقی پر توجہ دینی چاہیے۔",
+        roman: "Aitmad insaan ko naye kaam shuru karne aur mushkilat ka samna karne ki himmat deta hai. Khud aitmadi ka matlab yeh nahi ke insaan kabhi ghalti nahi karta, balkay is ka matlab hai ke woh seekhne aur behtar hone ki koshish jari rakhta hai. Apni salahiyaton ko pehchanna, tayari karna aur musbat soch rakhna aitmad barhanay mein madad deta hai. Doosron se apna muqabla karne ke bajaye apni taraqqi par tawajju deni chahiye."
       },
       {
-        urdu: "کھیل اور جسمانی سرگرمیاں انسان کی صحت کے ساتھ ساتھ نظم و ضبط اور تعاون کی صلاحیت بھی بہتر بناتی ہیں۔ کھیل میں حصہ لینے سے انسان اصولوں کی پابندی، ٹیم کے ساتھ کام کرنے اور جیت یا ہار کو مثبت انداز میں قبول کرنے کا سبق سیکھتا ہے۔ روزمرہ معمول میں سرگرمی کے لیے وقت نکالنا مفید ہے۔",
-        roman: "Khel aur jismani sargarmiyan insaan ki sehat ke sath sath nazm o zabt aur taawun ki salahiyat bhi behtar banati hain. Khel mein hissa lene se insaan usoolon ki pabandi, team ke sath kaam karne aur jeet ya haar ko musbat andaaz mein qabool karne ka sabaq seekhta hai. Rozmarrah mamool mein sargarmi ke liye waqt nikalna mufeed hai."
+        urdu: "مقصد کے بغیر محنت کرنے سے انسان اپنی توانائی درست سمت میں استعمال نہیں کر پاتا۔ واضح مقصد مقرر کرنے کے بعد اسے چھوٹے اور قابل عمل مراحل میں تقسیم کرنا مفید ہوتا ہے۔ ہر مرحلے کی پیش رفت کا جائزہ لینے سے معلوم ہوتا ہے کہ کہاں بہتری کی ضرورت ہے۔ مشکلات آنے پر منصوبے میں مناسب تبدیلی کی جا سکتی ہے۔ مستقل کوشش اور حقیقت پسندانہ منصوبہ بندی کامیابی کے امکانات بڑھا دیتی ہے۔",
+        roman: "Maqsad ke baghair mehnat karne se insaan apni tawanai durust simt mein istemal nahi kar pata. Wazeh maqsad muqarrar karne ke baad use chhotay aur qabil e amal marahil mein taqseem karna mufeed hota hai. Har marhalay ki pesh raft ka jaiza lene se maloom hota hai ke kahan behtari ki zaroorat hai. Mushkilat anay par mansubay mein munasib tabdeeli ki ja sakti hai. Mustaqil koshish aur haqeeqat pasand mansuba bandi kamyabi ke imkanat barha deti hai."
       },
       {
-        urdu: "اچھا شہری وہ ہوتا ہے جو اپنے حقوق کے ساتھ اپنی ذمہ داریوں کو بھی سمجھتا ہے۔ قانون کی پابندی، دوسروں کے حقوق کا احترام، عوامی مقامات کی حفاظت اور ضرورت مند لوگوں کی مدد معاشرے کو بہتر بناتے ہیں۔ جب شہری ذمہ داری سے کام لیتے ہیں تو اعتماد، امن اور باہمی تعاون کو فروغ ملتا ہے۔",
-        roman: "Acha shehri woh hota hai jo apne huqooq ke sath apni zimmedariyon ko bhi samajhta hai. Qanoon ki pabandi, doosron ke huqooq ka ehtram, awami maqamat ki hifazat aur zaroorat mand logon ki madad muashray ko behtar banate hain. Jab shehri zimmedari se kaam lete hain to aitmaad, aman aur bahami taawun ko farogh milta hai."
+        urdu: "ایک بہتر معاشرہ بنانے کے لیے باہمی احترام، انصاف اور تعاون ضروری ہیں۔ ہمیں دوسروں کے حقوق کا خیال رکھنا چاہیے اور اختلافات کو پرامن طریقے سے حل کرنے کی کوشش کرنی چاہیے۔ چھوٹے اچھے کام، جیسے کسی ضرورت مند کی مدد کرنا یا عوامی جگہ کو صاف رکھنا، معاشرے پر مثبت اثر ڈال سکتے ہیں۔ جب شہری اپنی ذمہ داری سمجھتے ہیں تو اعتماد بڑھتا ہے اور اجتماعی زندگی زیادہ بہتر ہو جاتی ہے۔",
+        roman: "Aik behtar muashra bananay ke liye bahami ehtram, insaf aur taawun zaroori hain. Humein doosron ke huqooq ka khayal rakhna chahiye aur ikhtilafat ko puraman tareeqay se hal karne ki koshish karni chahiye. Chhotay achay kaam, jaise kisi zaroorat mand ki madad karna ya awami jagah ko saaf rakhna, muashray par musbat asar dal sakte hain. Jab shehri apni zimmedari samajhte hain to aitmad barhta hai aur ijtimai zindagi zyada behtar ho jati hai."
       },
       {
-        urdu: "زندگی میں مثبت سوچ رکھنے کا مطلب مشکلات کو نظر انداز کرنا نہیں بلکہ ان کا سامنا امید اور سمجھ داری سے کرنا ہے۔ انسان اپنی غلطیوں سے سیکھ کر بہتر فیصلے کر سکتا ہے۔ حقیقت پسندانہ اہداف مقرر کرنا، دوسروں سے مدد لینا اور کوشش جاری رکھنا مشکل حالات میں آگے بڑھنے میں مدد دیتا ہے۔",
-        roman: "Zindagi mein musbat soch rakhne ka matlab mushkilat ko nazar andaz karna nahi balkay unka samna umeed aur samajhdari se karna hai. Insaan apni ghaltiyon se seekh kar behtar faislay kar sakta hai. Haqeeqat pasandana hadaf muqarrar karna, doosron se madad lena aur koshish jari rakhna mushkil halaat mein aage barhne mein madad deta hai."
+        urdu: "روزانہ کی زندگی میں نظم و ضبط انسان کو اپنے کام وقت پر مکمل کرنے میں مدد دیتا ہے۔ مناسب معمول بنانے سے پڑھائی، آرام، ورزش اور خاندان کے لیے وقت نکالنا آسان ہو جاتا ہے۔ کبھی کبھار غیر متوقع حالات کی وجہ سے منصوبہ تبدیل کرنا پڑ سکتا ہے، لیکن ترجیحات واضح ہوں تو دوبارہ ترتیب بنائی جا سکتی ہے۔ اچھی عادتیں مسلسل عمل سے بنتی ہیں اور وقت کے ساتھ ہماری کارکردگی بہتر بناتی ہیں۔",
+        roman: "Rozana ki zindagi mein nazm o zabt insaan ko apne kaam waqt par mukammal karne mein madad deta hai. Munasib mamool bananay se parhai, aram, warzish aur khandan ke liye waqt nikalna asan ho jata hai. Kabhi kabhar ghair mutawaqqa halaat ki wajah se mansuba tabdeel karna par sakta hai, lekin tarjihat wazeh hon to dobara tarteeb banai ja sakti hai. Achi aadatein musalsal amal se banti hain aur waqt ke sath hamari karkardagi behtar banati hain."
       }
     ];
 
-    const $ = (id) => document.getElementById(id);
+    const $ = id => document.getElementById(id);
 
-    let participant = { name: "", id: "", language: "urdu" };
+    let participant = null;
     let currentIndex = 0;
-    let recorder = null;
-    let stream = null;
-    let chunks = [];
-    let timerInterval = null;
-    let secondsLeft = MAX_SECONDS;
-    let isRecording = false;
-    let recordingStartedAt = null;
-    let currentMimeType = "";
     let recordings = Array(TOTAL).fill(null);
+    let mediaRecorder = null;
+    let audioStream = null;
+    let audioChunks = [];
+    let isRecording = false;
+    let countdown = MAX_SECONDS;
+    let timerInterval = null;
+    let recordingStartedAt = 0;
+    let stopReason = "manual";
+    let uploadInProgress = false;
 
-    function safeFilename(value) {
-      return value
-        .trim()
-        .replace(/[^a-zA-Z0-9_-]+/g, "_")
-        .replace(/^_+|_+$/g, "")
-        .slice(0, 60) || "participant";
+    function setStatus(message, type = "info", elementId = "recordingStatus") {
+      const element = $(elementId);
+      element.textContent = message;
+      element.className = "status " + type;
     }
 
-    function getExtension(mimeType) {
-      if (mimeType.includes("mp4")) return "mp4";
-      if (mimeType.includes("ogg")) return "ogg";
-      return "webm";
-    }
-
-    function setStatus(message, type = "") {
-      const el = $("recordStatus");
-      el.textContent = message;
-      el.className = "status" + (type ? " " + type : "");
-    }
-
-    function getRecordingCount() {
-      return recordings.filter(Boolean).length;
-    }
-
-    function updateProgress() {
-      const count = getRecordingCount();
-      const percent = Math.round((count / TOTAL) * 100);
-      $("progressText").textContent = `${count} of ${TOTAL} completed`;
-      $("progressPercent").textContent = `${percent}%`;
-      $("progressFill").style.width = `${percent}%`;
+    function selectedText(index) {
+      return participant.language === "urdu"
+        ? paragraphs[index].urdu
+        : paragraphs[index].roman;
     }
 
     function updateTimer() {
-      $("timer").textContent =
-        `00:${String(secondsLeft).padStart(2, "0")}`;
-      $("timer").classList.toggle("danger", secondsLeft <= 10);
+      const minutes = String(Math.floor(countdown / 60)).padStart(2, "0");
+      const seconds = String(countdown % 60).padStart(2, "0");
+      $("timer").textContent = `${minutes}:${seconds}`;
+      $("timer").classList.toggle("recording", isRecording);
     }
 
-    function updateRecordingIndicator(active) {
-      $("recordingIndicator").classList.toggle("active", active);
-      $("recordingLabel").textContent =
-        active ? "Recording in progress" : "Ready to record";
+    function updateProgress() {
+      const completed = recordings.filter(Boolean).length;
+
+      $("paragraphCounter").textContent =
+        `Paragraph ${currentIndex + 1} of ${TOTAL}`;
+
+      $("completedCounter").textContent =
+        `${completed} of ${TOTAL} recorded`;
+
+      $("progressFill").style.width = `${(completed / TOTAL) * 100}%`;
+
+      $("previousBtn").disabled = currentIndex === 0 || isRecording;
+      $("nextBtn").disabled = currentIndex === TOTAL - 1 || isRecording;
+
+      $("recordBtn").disabled = isRecording;
+      $("playBtn").disabled = isRecording || !recordings[currentIndex];
+      $("downloadCurrentBtn").disabled =
+        isRecording || !recordings[currentIndex];
+
+      if (completed > 0) {
+        $("submissionCard").classList.remove("hidden");
+      }
+
+      renderRecordingList();
     }
 
     function renderParagraph() {
-      const paragraph = paragraphs[currentIndex];
-      const language = participant.language;
-      const hasRecording = Boolean(recordings[currentIndex]);
+      const textElement = $("passageText");
+      textElement.textContent = selectedText(currentIndex);
+      textElement.classList.toggle("urdu", participant.language === "urdu");
 
-      $("paragraphTitle").textContent =
-        `Paragraph ${currentIndex + 1} of ${TOTAL}`;
-      $("pageCounter").textContent = `${currentIndex + 1} / ${TOTAL}`;
-      $("languageBadge").textContent =
-        language === "urdu" ? "Urdu" : "Roman Urdu";
+      $("recordingIndicator").textContent = isRecording
+        ? "● Recording in progress..."
+        : "";
 
-      $("passageText").textContent =
-        language === "urdu" ? paragraph.urdu : paragraph.roman;
-
-      $("passageBox").classList.toggle("urdu", language === "urdu");
-      $("passageBox").dir = language === "urdu" ? "rtl" : "ltr";
-
-      $("prevBtn").disabled = currentIndex === 0 || isRecording;
-      $("nextBtn").disabled = currentIndex === TOTAL - 1 || isRecording;
-      $("recordBtn").disabled = isRecording || hasRecording;
-      $("stopBtn").disabled = !isRecording;
-
-      $("recordBtn").textContent = hasRecording
-        ? "✓ Recording Completed"
-        : "🎙️ Start Recording";
-
-      $("playbackArea").classList.toggle("hidden", !hasRecording);
-
-      if (hasRecording) {
-        $("audioPlayer").src = recordings[currentIndex].url;
-        $("audioPlayer").load();
-        secondsLeft = MAX_SECONDS;
-        setStatus(
-          `Recording saved in this page. Duration: ${recordings[currentIndex].duration} seconds.`,
-          "success"
-        );
-      } else {
-        $("audioPlayer").removeAttribute("src");
-        $("audioPlayer").load();
-        secondsLeft = MAX_SECONDS;
-        setStatus(
-          "Each paragraph can be recorded once, for up to 45 seconds."
-        );
-      }
+      countdown = recordings[currentIndex]
+        ? Math.max(0, MAX_SECONDS - recordings[currentIndex].duration)
+        : MAX_SECONDS;
 
       updateTimer();
       updateProgress();
+
+      if (recordings[currentIndex]) {
+        setStatus(
+          `Paragraph ${currentIndex + 1} is recorded. You can play it again or record it again.`,
+          "success"
+        );
+      } else {
+        setStatus("When you are ready, click Start Recording.", "info");
+      }
     }
 
-    $("beginBtn").addEventListener("click", () => {
-      const name = $("participantName").value.trim();
-      const id = $("participantId").value.trim();
-
-      if (!name || !id) {
-        $("setupStatus").textContent =
-          "Please enter both your name and participant ID.";
-        $("setupStatus").className = "status error";
-        return;
-      }
-
-      participant = {
-        name,
-        id,
-        language: $("language").value
-      };
-
-      $("participantBadge").textContent = `${name} · ${id}`;
-      $("assignmentCard").classList.remove("hidden");
-      $("participantCard").classList.add("hidden");
-
-      renderParagraph();
-      $("assignmentCard").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    });
-
     async function startRecording() {
-      if (recordings[currentIndex]) {
-        setStatus("This paragraph has already been recorded.", "error");
-        return;
-      }
+      if (isRecording) return;
 
-      if (!navigator.mediaDevices ||
-          !navigator.mediaDevices.getUserMedia ||
-          !window.MediaRecorder) {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         setStatus(
-          "Recording is not supported in this browser. Open the website using HTTPS in an updated Chrome browser.",
+          "Microphone recording is unavailable. Open this page over HTTPS in a supported browser.",
           "error"
         );
         return;
       }
 
       try {
-        $("recordBtn").disabled = true;
-        setStatus("Requesting microphone permission...");
+        audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: true
-        });
-
-        const mimeOptions = [
+        const preferredTypes = [
           "audio/webm;codecs=opus",
           "audio/webm",
           "audio/mp4",
           "audio/ogg;codecs=opus"
         ];
 
-        currentMimeType = "";
-        for (const type of mimeOptions) {
-          if (MediaRecorder.isTypeSupported(type)) {
-            currentMimeType = type;
-            break;
-          }
+        let mimeType = "";
+
+        if (window.MediaRecorder && MediaRecorder.isTypeSupported) {
+          mimeType = preferredTypes.find(type =>
+            MediaRecorder.isTypeSupported(type)
+          ) || "";
         }
 
-        recorder = currentMimeType
-          ? new MediaRecorder(stream, { mimeType: currentMimeType })
-          : new MediaRecorder(stream);
+        mediaRecorder = mimeType
+          ? new MediaRecorder(audioStream, { mimeType })
+          : new MediaRecorder(audioStream);
 
-        chunks = [];
+        audioChunks = [];
+        countdown = MAX_SECONDS;
+        stopReason = "manual";
         recordingStartedAt = Date.now();
-        secondsLeft = MAX_SECONDS;
-        isRecording = true;
 
-        recorder.ondataavailable = (event) => {
+        mediaRecorder.ondataavailable = event => {
           if (event.data && event.data.size > 0) {
-            chunks.push(event.data);
+            audioChunks.push(event.data);
           }
         };
 
-        recorder.onerror = () => {
-          setStatus("A recording error occurred. Please reload and try again.", "error");
-          finishRecording(false);
-        };
-
-        recorder.onstop = () => {
-          const actualType = recorder.mimeType ||
-            currentMimeType || "audio/webm";
-
-          const blob = new Blob(chunks, { type: actualType });
-          const elapsed = Math.min(
+        mediaRecorder.onstop = () => {
+          const actualMime = mediaRecorder.mimeType || "audio/webm";
+          const blob = new Blob(audioChunks, { type: actualMime });
+          const duration = Math.min(
             MAX_SECONDS,
             Math.max(1, Math.round((Date.now() - recordingStartedAt) / 1000))
           );
 
           if (blob.size > 0) {
-            const url = URL.createObjectURL(blob);
+            const oldRecording = recordings[currentIndex];
+
+            if (oldRecording && oldRecording.url) {
+              URL.revokeObjectURL(oldRecording.url);
+            }
 
             recordings[currentIndex] = {
               blob,
-              url,
-              mimeType: actualType,
-              duration: elapsed,
+              url: URL.createObjectURL(blob),
+              mimeType: actualMime,
+              duration,
               paragraphNumber: currentIndex + 1,
-              text: participant.language === "urdu"
-                ? paragraphs[currentIndex].urdu
-                : paragraphs[currentIndex].roman
+              text: selectedText(currentIndex),
+              uploaded: false
             };
 
             setStatus(
-              `Recording saved successfully (${elapsed} seconds). Download it before closing the page.`,
+              stopReason === "limit"
+                ? "The 45-second limit was reached. Your recording has been saved in this page."
+                : "Recording saved in this page. You can play it or continue to the next paragraph.",
               "success"
             );
           } else {
             setStatus("No audio data was captured. Please try again.", "error");
           }
 
-          if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-            stream = null;
-          }
-
-          recorder = null;
-          chunks = [];
+          cleanupStream();
           isRecording = false;
-          updateRecordingIndicator(false);
-          $("recordBtn").disabled = Boolean(recordings[currentIndex]);
-          $("stopBtn").disabled = true;
-          renderParagraph();
+          $("recordBtn").classList.remove("hidden");
+          $("stopBtn").classList.add("hidden");
+          $("recordingIndicator").textContent = "";
+          updateProgress();
+          updateTimer();
+          $("timer").classList.remove("recording");
         };
 
-        recorder.start();
+        mediaRecorder.start(250);
+        isRecording = true;
 
-        $("recordBtn").disabled = true;
-        $("stopBtn").disabled = false;
-        updateRecordingIndicator(true);
-        setStatus("Recording started. It will stop automatically at 45 seconds.");
+        $("recordBtn").classList.add("hidden");
+        $("stopBtn").classList.remove("hidden");
+        $("recordingIndicator").textContent = "● Recording in progress...";
+        setStatus("Recording started. Speak clearly and naturally.", "info");
+
+        updateTimer();
 
         timerInterval = setInterval(() => {
-          secondsLeft -= 1;
+          countdown--;
           updateTimer();
 
-          if (secondsLeft <= 0) {
-            secondsLeft = 0;
-            updateTimer();
-            finishRecording(true);
+          if (countdown <= 0) {
+            stopReason = "limit";
+            stopRecording();
           }
         }, 1000);
 
       } catch (error) {
+        cleanupStream();
         isRecording = false;
-        $("recordBtn").disabled = false;
-        $("stopBtn").disabled = true;
-        updateRecordingIndicator(false);
-
-        if (stream) {
-          stream.getTracks().forEach(track => track.stop());
-          stream = null;
-        }
-
-        let message = "Could not access the microphone. Check your browser permissions.";
-
-        if (error && error.name === "NotAllowedError") {
-          message = "Microphone access was denied. Allow microphone permission for this website in Chrome settings.";
-        } else if (error && error.name === "NotFoundError") {
-          message = "No microphone was found. Connect or enable a microphone and try again.";
-        } else if (error && error.name === "NotReadableError") {
-          message = "The microphone may be in use by another application. Close that application and try again.";
-        }
-
-        setStatus(message, "error");
+        setStatus(
+          "Microphone access failed. Please allow microphone permission in your browser and try again.",
+          "error"
+        );
       }
     }
 
-    function finishRecording(autoStopped = false) {
+    function stopRecording() {
+      if (!isRecording) return;
+
       if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
       }
 
-      if (!isRecording || !recorder) return;
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+      }
+    }
 
-      if (autoStopped) {
-        secondsLeft = 0;
-        updateTimer();
-        setStatus("45 seconds completed. Recording stopped automatically.");
+    function cleanupStream() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
       }
 
-      if (recorder.state !== "inactive") {
-        recorder.stop();
+      if (audioStream) {
+        audioStream.getTracks().forEach(track => track.stop());
+        audioStream = null;
       }
+    }
+
+    function moveToParagraph(index) {
+      if (isRecording) {
+        setStatus("Stop the current recording before changing paragraphs.", "error");
+        return;
+      }
+
+      if (index < 0 || index >= TOTAL) return;
+
+      currentIndex = index;
+      renderParagraph();
+    }
+
+    function playCurrentRecording() {
+      const item = recordings[currentIndex];
+
+      if (!item) {
+        setStatus("Record this paragraph before playing it.", "error");
+        return;
+      }
+
+      const audio = new Audio(item.url);
+      audio.play().catch(() => {
+        setStatus("Unable to play the recording in this browser.", "error");
+      });
     }
 
     function downloadCurrentRecording() {
@@ -977,30 +731,82 @@
 
       const extension = getExtension(item.mimeType);
       const filename =
-        `${safeFilename(participant.id)}_paragraph_${String(currentIndex + 1).padStart(2, "0")}.${extension}`;
+        safeFilename(participant.participantId) +
+        "_P" + String(currentIndex + 1).padStart(2, "0") +
+        "." + extension;
 
-      const link = document.createElement("a");
-      link.href = item.url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      downloadBlob(item.blob, filename);
     }
 
-    function goToParagraph(nextIndex) {
-      if (isRecording) {
-        setStatus("Stop the current recording before changing paragraphs.", "error");
-        return;
-      }
+    function getExtension(mimeType) {
+      const type = String(mimeType || "").split(";")[0].toLowerCase();
+      if (type === "audio/mp4") return "mp4";
+      if (type === "audio/ogg") return "ogg";
+      if (type === "audio/webm") return "webm";
+      return "webm";
+    }
 
-      if (nextIndex < 0 || nextIndex >= TOTAL) return;
+    function safeFilename(value) {
+      return String(value || "participant")
+        .trim()
+        .replace(/[^a-zA-Z0-9_-]/g, "_")
+        .slice(0, 50) || "participant";
+    }
 
-      currentIndex = nextIndex;
-      renderParagraph();
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = filename;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
 
-      $("passageBox").scrollIntoView({
-        behavior: "smooth",
-        block: "center"
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+    }
+
+    function renderRecordingList() {
+      const list = $("recordingList");
+      list.replaceChildren();
+
+      recordings.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "recording-item" + (item ? " done" : "");
+
+        const title = document.createElement("strong");
+        title.textContent = `Paragraph ${index + 1}`;
+        card.appendChild(title);
+
+        const description = document.createElement("div");
+        description.textContent = item
+          ? `Recorded · ${item.duration} seconds`
+          : "Not recorded yet";
+        card.appendChild(description);
+
+        if (item) {
+          const audio = document.createElement("audio");
+          audio.controls = true;
+          audio.preload = "none";
+          audio.src = item.url;
+          card.appendChild(audio);
+
+          const download = document.createElement("button");
+          download.type = "button";
+          download.className = "btn-outline";
+          download.textContent = "Download";
+          download.style.marginTop = "8px";
+          download.addEventListener("click", () => {
+            downloadBlob(
+              item.blob,
+              safeFilename(participant.participantId) +
+                "_P" + String(index + 1).padStart(2, "0") +
+                "." + getExtension(item.mimeType)
+            );
+          });
+          card.appendChild(download);
+        }
+
+        list.appendChild(card);
       });
     }
 
@@ -1009,127 +815,250 @@
         const reader = new FileReader();
 
         reader.onloadend = () => {
-          const result = reader.result;
-          if (typeof result !== "string") {
-            reject(new Error("Could not convert recording."));
+          if (typeof reader.result !== "string") {
+            reject(new Error("Could not read audio data."));
             return;
           }
 
-          resolve(result.split(",")[1]);
+          const commaIndex = reader.result.indexOf(",");
+          resolve(reader.result.slice(commaIndex + 1));
         };
 
-        reader.onerror = () => reject(new Error("Could not read recording."));
+        reader.onerror = () => reject(new Error("Could not read audio data."));
         reader.readAsDataURL(blob);
       });
     }
 
-    async function exportData() {
+    async function uploadAllRecordings() {
+      if (uploadInProgress) return;
+
       if (isRecording) {
-        $("exportStatus").textContent =
-          "Stop the current recording before exporting your data.";
-        $("exportStatus").className = "status error";
+        setStatus("Please stop recording before submitting.", "error", "exportStatus");
         return;
       }
 
-      const available = recordings.filter(Boolean);
-      if (available.length === 0) {
-        $("exportStatus").textContent =
-          "You have not recorded any paragraphs yet.";
-        $("exportStatus").className = "status error";
+      const completed = recordings
+        .map((item, index) => ({ item, index }))
+        .filter(entry => entry.item !== null);
+
+      if (completed.length === 0) {
+        setStatus(
+          "Please record at least one paragraph before submitting.",
+          "error",
+          "exportStatus"
+        );
         return;
       }
 
-      $("exportBtn").disabled = true;
-      $("exportStatus").textContent =
-        "Preparing export. Please keep this page open...";
+      const notUploaded = completed.filter(entry => !entry.item.uploaded);
+
+      if (notUploaded.length === 0) {
+        setStatus(
+          "All recordings have already been marked as sent by this page. Check Google Drive before submitting again.",
+          "info",
+          "exportStatus"
+        );
+        return;
+      }
+
+      const confirmed = confirm(
+        `Send ${notUploaded.length} recording(s) for participant ${participant.participantId} to Google Drive?`
+      );
+
+      if (!confirmed) return;
+
+      uploadInProgress = true;
+      $("uploadBtn").disabled = true;
+
+      let sent = 0;
+      let failed = 0;
 
       try {
-        const data = {
-          participantName: participant.name,
-          participantId: participant.id,
-          language: participant.language,
-          totalParagraphs: TOTAL,
-          completedRecordings: available.length,
-          exportedAt: new Date().toISOString(),
-          recordings: []
-        };
+        for (let i = 0; i < notUploaded.length; i++) {
+          const entry = notUploaded[i];
+          const item = entry.item;
 
-        for (let i = 0; i < TOTAL; i++) {
-          const item = recordings[i];
-          if (!item) continue;
+          setStatus(
+            `Preparing recording ${i + 1} of ${notUploaded.length}...`,
+            "info",
+            "exportStatus"
+          );
 
-          data.recordings.push({
-            paragraphNumber: i + 1,
-            text: item.text,
-            durationSeconds: item.duration,
-            mimeType: item.mimeType,
-            audioBase64: await blobToBase64(item.blob)
+          try {
+            const audioBase64 = await blobToBase64(item.blob);
+
+            const payload = {
+              participantName: participant.name,
+              participantId: participant.participantId,
+              language: participant.language,
+              paragraphNumber: entry.index + 1,
+              durationSeconds: item.duration,
+              mimeType: String(item.mimeType || "audio/webm").split(";")[0],
+              audioBase64
+            };
+
+            /*
+              Apps Script requests can be affected by browser CORS/redirect
+              behavior. no-cors lets the browser send the request, but it
+              does NOT let this page read the server's response. Therefore,
+              "sent" here is not proof that the file was saved successfully.
+            */
+            await fetch(BACKEND_URL, {
+              method: "POST",
+              mode: "no-cors",
+              headers: {
+                "Content-Type": "text/plain;charset=UTF-8"
+              },
+              body: JSON.stringify(payload)
+            });
+
+            sent++;
+            item.uploaded = true;
+
+            setStatus(
+              `Upload request sent for paragraph ${entry.index + 1}. Checking progress: ${sent} of ${notUploaded.length}. Verify the files in Google Drive after this process.`,
+              "info",
+              "exportStatus"
+            );
+
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+          } catch (error) {
+            failed++;
+          }
+        }
+
+        if (failed === 0) {
+          setStatus(
+            `${sent} upload request(s) were sent by the browser. This does not confirm that Google Drive saved them. Open your Drive folder and spreadsheet to verify every paragraph before closing this page.`,
+            "success",
+            "exportStatus"
+          );
+        } else {
+          setStatus(
+            `${sent} request(s) were sent and ${failed} failed in the browser. Check Google Drive before retrying to avoid duplicate files.`,
+            "error",
+            "exportStatus"
+          );
+        }
+
+      } finally {
+        uploadInProgress = false;
+        $("uploadBtn").disabled = false;
+      }
+    }
+
+    async function exportRecordingsJSON() {
+      if (isRecording) {
+        setStatus("Please stop recording before exporting.", "error", "exportStatus");
+        return;
+      }
+
+      const completed = recordings
+        .map((item, index) => ({ item, index }))
+        .filter(entry => entry.item !== null);
+
+      if (!completed.length) {
+        setStatus("There are no recordings to export yet.", "error", "exportStatus");
+        return;
+      }
+
+      setStatus("Preparing JSON export...", "info", "exportStatus");
+
+      try {
+        const exported = [];
+
+        for (const entry of completed) {
+          exported.push({
+            participantName: participant.name,
+            participantId: participant.participantId,
+            language: participant.language,
+            paragraphNumber: entry.index + 1,
+            durationSeconds: entry.item.duration,
+            mimeType: entry.item.mimeType,
+            text: entry.item.text,
+            audioBase64: await blobToBase64(entry.item.blob)
           });
         }
 
-        const blob = new Blob(
-          [JSON.stringify(data, null, 2)],
-          { type: "application/json" }
+        const json = JSON.stringify({
+          exportedAt: new Date().toISOString(),
+          participant,
+          totalParagraphs: TOTAL,
+          recordings: exported
+        }, null, 2);
+
+        downloadBlob(
+          new Blob([json], { type: "application/json" }),
+          safeFilename(participant.participantId) + "_recordings.json"
         );
 
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download =
-          `${safeFilename(participant.id)}_recording_data.json`;
-
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-        $("exportStatus").textContent =
-          `Export created with ${available.length} recording(s). Keep the JSON file safe; it contains your audio data.`;
-        $("exportStatus").className = "status success";
-
+        setStatus("JSON export downloaded.", "success", "exportStatus");
       } catch (error) {
-        $("exportStatus").textContent =
-          "Export failed. Download each audio file separately and try again.";
-        $("exportStatus").className = "status error";
-      } finally {
-        $("exportBtn").disabled = false;
+        setStatus("Could not export the recordings. Please try again.", "error", "exportStatus");
       }
     }
+
+    $("participantForm").addEventListener("submit", event => {
+      event.preventDefault();
+
+      const name = $("participantName").value.trim();
+      const participantId = $("participantId").value.trim();
+      const languageInput = document.querySelector('input[name="language"]:checked');
+
+      if (!name || !participantId || !languageInput) {
+        alert("Please enter your name, participant ID, and select a language.");
+        return;
+      }
+
+      participant = {
+        name,
+        participantId,
+        language: languageInput.value
+      };
+
+      $("welcomeHeading").textContent = `Welcome, ${name}`;
+      $("participantSummary").textContent =
+        `Participant ID: ${participantId} · Language: ${
+          participant.language === "urdu" ? "Urdu" : "Roman Urdu"
+        }`;
+
+      $("participantCard").classList.add("hidden");
+      $("assignmentCard").classList.remove("hidden");
+
+      renderParagraph();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
     $("recordBtn").addEventListener("click", startRecording);
 
     $("stopBtn").addEventListener("click", () => {
-      finishRecording(false);
+      stopReason = "manual";
+      stopRecording();
     });
 
-    $("downloadBtn").addEventListener("click", downloadCurrentRecording);
+    $("playBtn").addEventListener("click", playCurrentRecording);
+    $("downloadCurrentBtn").addEventListener("click", downloadCurrentRecording);
 
-    $("prevBtn").addEventListener("click", () => {
-      goToParagraph(currentIndex - 1);
+    $("previousBtn").addEventListener("click", () => {
+      moveToParagraph(currentIndex - 1);
     });
 
     $("nextBtn").addEventListener("click", () => {
-      goToParagraph(currentIndex + 1);
+      moveToParagraph(currentIndex + 1);
     });
 
-    $("exportBtn").addEventListener("click", exportData);
+    $("uploadBtn").addEventListener("click", uploadAllRecordings);
+    $("exportBtn").addEventListener("click", exportRecordingsJSON);
 
-    window.addEventListener("beforeunload", () => {
-      if (timerInterval) clearInterval(timerInterval);
-
-      if (recorder && recorder.state !== "inactive") {
-        recorder.stop();
+    window.addEventListener("beforeunload", event => {
+      if (isRecording || recordings.some(Boolean)) {
+        event.preventDefault();
+        event.returnValue = "";
       }
-
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-
-      recordings.forEach(item => {
-        if (item && item.url) URL.revokeObjectURL(item.url);
-      });
     });
+
+    updateTimer();
   </script>
 </body>
 </html>
