@@ -2,6 +2,20 @@ import re, json
 from pathlib import Path
 
 html = Path("index.html").read_text(encoding="utf-8")
+FIXES = [
+    ("immedar", "imme dar"),           # zimmedar/zimmedari/zimmedarana -> zimme dar...
+    ("qabil e ", "qabil "),            # qabil e aitmad, qabil e amal
+    ("Ikhtilaf e rai", "Ikhtilaf rai"),
+    ("ikhtilaf e rai", "ikhtilaf rai"),
+    ("kyun ke", "kyunke"),
+    ("khushgawar", "khush gawar"),
+    ("khoobsurat", "khoob surat"),
+    ("beshumar", "be shumar"),
+    ("online", "aan line"),
+    ("ka muzahira ghalat", "ka muzahira karna ghalat"),
+]
+for a, b in FIXES:
+    html = html.replace(a, b)
 pairs = re.findall(r'urdu:\s*"(.*?)"\s*,\s*roman:\s*"(.*?)"', html, re.S)
 print(len(pairs), "paragraphs mile (20 hone chahiye)")
 
